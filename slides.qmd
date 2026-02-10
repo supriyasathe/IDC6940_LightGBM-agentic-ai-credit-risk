@@ -31,19 +31,9 @@ More information about `revealjs`:
 
 ## Introduction  {.smaller}
 
--   Develop a storyline that captures attention and maintains interest.
-
--   Your audience is your peers
-
--   Clearly state the problem or question you're addressing.
-
--   Introduce why it is relevant needs.
-
--   Provide an overview of your approach.
-
-In kernel estimator, weight function is known as kernel function
-[@efr2008]. Cite this paper [@bro2014principal]. The GEE [@wang2014].
-The PCA [@daffertshofer2004pca]\*
+In financial institutions, evaluating credit risk is essential since it has a direct bearing on lending choices, portfolio performance, and regulatory compliance. The simplicity and interpretability of traditional credit scoring models, including logistic regression, have led to their widespread use. Unfortunately, these models are less successful due to the increasing number and complexity of financial data, as they are unable to capture complicated borrower behavior and non-linear correlations. 
+Credit risk prediction has been greatly enhanced by recent developments in machine learning, particularly ensemble techniques like Gradient Boosting Decision Trees. Large, high-dimensional, and unbalanced credit datasets can be handled using the scalable and potent Light Gradient Boosting Machine (LightGBM) model. LightGBM is frequently regarded as a black-box approach, which restricts transparency and erodes confidence among regulators and business users despite its impressive performance.
+This study suggests an Explainable Agentic AI framework for credit risk assessment utilizing LightGBM in order to overcome these issues. An intelligent agentic decision layer that can read predictions, produce explanations, and suggest actions is combined with LightGBM and SHAP-based explainability. The system seeks to promote responsible and explicable credit judgments in regulated financial contexts by combining accuracy, transparency, and adaptive decision-making.
 
 ## Methods
 
