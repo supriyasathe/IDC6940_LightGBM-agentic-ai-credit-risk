@@ -33,10 +33,16 @@ Nice report!
 :::
 
 ## Introduction
+---
+title: "Explainable Agentic AI for Credit Risk Assessment"
+subtitle: "Weekly Progress Report - Week 5"
+date: "February 9, 2026"
+---
 
-- In financial institutions, evaluating credit risk is essential since it has a direct bearing on lending choices, portfolio performance, and regulatory compliance. The simplicity and interpretability of traditional credit scoring models, including logistic regression, have led to their widespread use. Unfortunately, these models are less successful due to the increasing number and complexity of financial data, as they are unable to capture complicated borrower behavior and non-linear correlations. 
-Credit risk prediction has been greatly enhanced by recent developments in machine learning, particularly ensemble techniques like Gradient Boosting Decision Trees. Large, high-dimensional, and unbalanced credit datasets can be handled using the scalable and potent Light Gradient Boosting Machine (LightGBM) model. LightGBM is frequently regarded as a black-box approach, which restricts transparency and erodes confidence among regulators and business users despite its impressive performance.
-This study suggests an Explainable Agentic AI framework for credit risk assessment utilizing LightGBM in order to overcome these issues. An intelligent agentic decision layer that can read predictions, produce explanations, and suggest actions is combined with LightGBM and SHAP-based explainability. The system seeks to promote responsible and explicable credit judgments in regulated financial contexts by combining accuracy, transparency, and adaptive decision-making.
+## Introduction
+In financial institutions, evaluating credit risk is essential as it directly impacts lending choices, portfolio performance, and regulatory compliance. Traditional models, such as logistic regression, are widely used due to their simplicity and interpretability. However, they struggle to capture the complex, non-linear correlations inherent in modern financial data.
+
+This study proposes an **Explainable Agentic AI framework** utilizing **LightGBM** to bridge the gap between high-performance predictive modeling and the transparency required by regulators.
 
 ## Methods
 
