@@ -1,3 +1,23 @@
+---
+title: "Explainable Agentic AI for Credit Risk Assessment using LightGBM"
+# subtitle: ""
+author: "Supriya Sathe (Advisor: Dr. Cohen)"
+date: '`r Sys.Date()`'
+format:
+  html:
+    code-fold: true
+course: Capstone Projects in Data Science
+bibliography: references.bib # file contains bibtex for references
+#always_allow_html: true # this allows to get PDF with HTML features
+self-contained: true
+execute: 
+  warning: false
+  message: false
+editor: 
+  markdown: 
+    wrap: 72
+---
+
 ## Introduction
 
 In financial institutions, evaluating credit risk is essential since it has a direct bearing on lending choices, portfolio performance, and regulatory compliance. The simplicity and interpretability of traditional credit scoring models, including logistic regression, have led to their widespread use. Unfortunately, these models are less successful due to the increasing number and complexity of financial data, as they are unable to capture complicated borrower behavior and non-linear correlations. 
