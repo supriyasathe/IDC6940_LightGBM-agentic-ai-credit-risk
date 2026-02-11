@@ -2,7 +2,7 @@
 title: "Explainable Agentic AI for Credit Risk Assessment using LightGBM"
 # subtitle: ""
 author: "Supriya Sathe (Advisor: Dr. Cohen)"
-date: '`r Sys.Date()`'
+date: '02 / 11 / 2026'
 format:
   html:
     code-fold: true
