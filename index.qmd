@@ -30,7 +30,7 @@ This study suggests an Explainable Agentic AI framework for credit risk assessme
 
 ## Literature Review
 
-Three active research pillars form the basis of this project:
+Five active research pillars form the basis of this project:
 
 1. Credit Risk Modeling 
 The statistical techniques used in early credit risk models, including logistic regression, are interpretable but outperform when applied to complicated, non-linear data. Recent studies have demonstrated that machine learning models, particularly ensemble approaches, greatly increase prediction accuracy. The most advanced models for structured financial data are gradient boosting models like XGBoost and LightGBM. LightGBM provides great speed, scalability, and efficiency for big credit datasets.
@@ -42,9 +42,7 @@ The black-box character of machine learning models is addressed by explainable A
 Automated decision systems must be fair, transparent, and accountable in order to comply with financial requirements. Explainable models are especially important in high-risk fields like credit scoring, where interpretability must be human-centered and adhere to ethical and regulatory norms.
 
 4. Agentic AI in Decision Systems
-By assessing outputs and suggesting actions, agentic AI systems surpass prediction. Agentic frameworks can combine explanation signals, risk thresholds, and model projections to initiate the proper reactions—approvals, rejections, or manual reviews—in financial decision-making.
-
-By verifying that decisions are transparent, flexible, and in line with human oversight, the combination of explainable models with agentic AI allows for responsible automation.
+By assessing outputs and suggesting actions, agentic AI systems surpass prediction. Agentic frameworks can combine explanation signals, risk thresholds, and model projections to initiate the proper reactions—approvals, rejections, or manual reviews—in financial decision-making. By verifying that decisions are transparent, flexible, and in line with human oversight, the combination of explainable models with agentic AI allows for responsible automation.
 
 5. Research Gap
 Few systems combine agentic decision-making, explainability, and predictive modeling into a single framework, despite the widespread use of LightGBM and SHAP. By putting out an Explainable Agentic AI system for credit risk assessment, this project fills this gap.
