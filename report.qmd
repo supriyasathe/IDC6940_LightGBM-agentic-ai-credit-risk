@@ -39,7 +39,7 @@ find_git_root <- function(start = getwd()) {
 }
 
 repo_root <- find_git_root()
-datasets_path <- file.path(repo_root, "datasets")
+datasets_path <- file.path(repo_root, "Dataset")
 
 # Reading the datafile healthcare-dataset-stroke-data
 credit_path <- file.path(datasets_path, "credit_risk_dataset.csv")
