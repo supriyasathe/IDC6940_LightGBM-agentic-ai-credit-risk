@@ -1,0 +1,71 @@
+---
+title: "Running code chunks"
+# subtitle: ""
+author: "Renan is awesome"
+date: '02 / 11 / 2026'
+format:
+  html:
+    code-fold: true
+course: Capstone Projects in Data Science
+self-contained: true
+execute: 
+  warning: false
+  message: false
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## R code chunks
+
+
+```{r}
+print("hello world!")
+```
+
+```{r}
+install.packages("reticulate")
+```
+
+```{r}
+
+```
+
+```{{text}}
+The downloaded binary packages are in
+        /var/folders/zr/rsp_30h14f16x29fb79jtv_40000gn/T//RtmpIujSpc/downloaded_packages
+Warning message:
+In doTryCatch(return(expr), name, parentenv, handler) :
+  unable to load shared object '/Library/Frameworks/R.framework/Resources/modules//R_X11.so':
+  dlopen(/Library/Frameworks/R.framework/Resources/modules//R_X11.so, 0x0006): Library not loaded: /opt/X11/lib/libSM.6.dylib
+  Referenced from: <7ECC4104-EC6A-38FD-9BEA-BFE0B870925C> /Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/modules/R_X11.so
+  Reason: tried: '/opt/X11/lib/libSM.6.dylib' (no such file), '/System/Volumes/Preboot/Cryptexes/OS/opt/X11/lib/libSM.6.dylib' (no such file), '/opt/X11/lib/libSM.6.dylib' (no such file), '/Library/Frameworks/R.framework/Resources/lib/libSM.6.dylib' (no such file), '/Library/Java/JavaVirtualMachines/jdk-11.0.18+10/Contents/Home/lib/server/libSM.6.dylib' (no such file)
+```
+
+## Python code chunks
+
+```{r}
+library(reticulate)
+# /opt/anaconda3/bin/python
+# /usr/local/bin/python
+use_python("/opt/anaconda3/bin/python")
+```
+
+```{python}
+#| label: fig-polar
+#| fig-cap: "A line plot on a polar axis"
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+r = np.arange(0, 2, 0.01)
+theta = 2 * np.pi * r
+fig, ax = plt.subplots(
+  subplot_kw = {'projection': 'polar'} 
+)
+ax.plot(theta, r)
+ax.set_rticks([0.5, 1, 1.5, 2])
+ax.grid(True)
+plt.show()
+```
+

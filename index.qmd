@@ -1,31 +1,38 @@
 ---
 title: "Explainable Agentic AI for Credit Risk Assessment using LightGBM"
-# subtitle: ""
-author: "Supriya Sathe (Advisor: Dr. Cohen)"
-date: '02 / 11 / 2026'
-format:
-  html:
-    code-fold: true
-course: Capstone Projects in Data Science
-bibliography: references.bib # file contains bibtex for references
-#always_allow_html: true # this allows to get PDF with HTML features
-self-contained: true
-execute: 
-  warning: false
-  message: false
-editor: 
-  markdown: 
-    wrap: 72
+author:
+  - name: "Supriya Sathe (Advisor: Dr. Cohen)"
+    url: https://github.com/supriyasathe
+  - name: "Supervisor: Dr. Cohen"
+bibliography: references.bib
+link-citations: true
 ---
 ## Note : Still working on methodology..
 
-## Introduction
+## 1. Introduction
 
 A vital role for financial institutions is evaluating credit risk, which has a direct impact on lending choices, portfolio performance, and regulatory compliance. Because they are straightforward and easy to understand, traditional credit scoring techniques like logistic regression have gained widespread use. These conventional models, however, find it difficult to account for nonlinear patterns and complicated borrower behaviors as financial data grows in size, complexity, and heterogeneity.
 
 The predictive accuracy of credit risk modeling has greatly increased as a result of recent developments in machine learning, especially ensemble-based techniques like Gradient Boosting Decision Trees (GBDT). Among these techniques, the Light Gradient Boosting Machine (LightGBM) has shown itself to be a very effective and scalable framework that can deal with imbalanced and high-dimensional credit datasets. Although LightGBM performs well, it is frequently perceived as a "black-box" paradigm, which restricts transparency and undermines confidence among auditors, regulators, and business users.
 
 This paper suggests an Explainable Agentic AI framework for credit risk assessment utilizing LightGBM in order to overcome these issues. The framework combines an intelligent agentic decision layer that analyzes model predictions, produces insightful explanations, and suggests suitable courses of action with SHAP-based explainability. The suggested approach seeks to facilitate responsible and explicable credit decision-making in regulated financial environments by fusing prediction accuracy, transparency, and adaptive reasoning.
+
+
+---
+
+## 2. Methods
+
+
+
+---
+
+## 3. Analysis and Results
+
+
+
+---
+
+## 4. Conclusion
 
 
 ---
