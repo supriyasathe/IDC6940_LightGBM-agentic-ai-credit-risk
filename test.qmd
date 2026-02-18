@@ -24,7 +24,7 @@ print("hello world!")
 ```
 
 ```{r}
-install.packages("reticulate")
+# install.packages("reticulate")
 ```
 
 ```{r}
