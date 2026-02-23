@@ -60,7 +60,7 @@
     "href": "report.html#load-libraries",
     "title": "Explainable Agentic AI for Credit Risk Assessment using LightGBM",
     "section": "Load Libraries",
-    "text": "Load Libraries\nThis code chunk is loading all libraries being used in the project.\n\n\nCode\npackages &lt;- c(\"tidyverse\", \"skimr\", \"knitr\", \"ggthemes\", \"ggrepel\", \"dslabs\")\n# install.packages(packages)\n# Load Libraries\nlapply(packages, library, character.only = TRUE)\n# Set seed for reproducibility\nset.seed(123)"
+    "text": "Load Libraries\nThis code chunk is loading all libraries being used in the project.\n\n\nCode\npackages &lt;- c(\"tidyverse\", \"skimr\", \"knitr\", \"ggthemes\", \"ggrepel\", \"dslabs\")\n# install.packages(packages)\n# Load Libraries\nlapply(packages, library, \ncharacter.only = TRUE)\n# Set seed for reproducibility\nset.seed(123)"
   },
   {
     "objectID": "report.html#import-dataset",
@@ -89,5 +89,54 @@
     "title": "Running code chunks",
     "section": "Python code chunks",
     "text": "Python code chunks\n\n\nCode\nlibrary(reticulate)\n# /opt/anaconda3/bin/python\n# /usr/local/bin/python\nuse_python(\"/opt/anaconda3/bin/python\")\n\n\n\n\nCode\nimport numpy as np\nimport matplotlib.pyplot as plt\n\nr = np.arange(0, 2, 0.01)\ntheta = 2 * np.pi * r\nfig, ax = plt.subplots(\n  subplot_kw = {'projection': 'polar'} \n)\nax.plot(theta, r)\nax.set_rticks([0.5, 1, 1.5, 2])\nax.grid(True)\nplt.show()\n\n\n\n\n\n\n\n\nFigure 1: A line plot on a polar axis"
+  },
+  {
+    "objectID": "slides.html#introduction",
+    "href": "slides.html#introduction",
+    "title": "Present a great story for data science projects",
+    "section": "Introduction",
+    "text": "Introduction\nIn financial institutions, evaluating credit risk is essential since it has a direct bearing on lending choices, portfolio performance, and regulatory compliance. The simplicity and interpretability of traditional credit scoring models, including logistic regression, have led to their widespread use. Unfortunately, these models are less successful due to the increasing number and complexity of financial data, as they are unable to capture complicated borrower behavior and non-linear correlations. Credit risk prediction has been greatly enhanced by recent developments in machine learning, particularly ensemble techniques like Gradient Boosting Decision Trees. Large, high-dimensional, and unbalanced credit datasets can be handled using the scalable and potent Light Gradient Boosting Machine (LightGBM) model. LightGBM is frequently regarded as a black-box approach, which restricts transparency and erodes confidence among regulators and business users despite its impressive performance. This study suggests an Explainable Agentic AI framework for credit risk assessment utilizing LightGBM in order to overcome these issues. An intelligent agentic decision layer that can read predictions, produce explanations, and suggest actions is combined with LightGBM and SHAP-based explainability. The system seeks to promote responsible and explicable credit judgments in regulated financial contexts by combining accuracy, transparency, and adaptive decision-making."
+  },
+  {
+    "objectID": "slides.html#methods",
+    "href": "slides.html#methods",
+    "title": "Present a great story for data science projects",
+    "section": "Methods",
+    "text": "Methods\n\nDetail the models or algorithms used.\nJustify your choices based on the problem and data."
+  },
+  {
+    "objectID": "slides.html#data-exploration-and-visualization",
+    "href": "slides.html#data-exploration-and-visualization",
+    "title": "Present a great story for data science projects",
+    "section": "Data Exploration and Visualization",
+    "text": "Data Exploration and Visualization\n\nDescribe your data sources and collection process.\nPresent initial findings and insights through visualizations.\nHighlight unexpected patterns or anomalies."
+  },
+  {
+    "objectID": "slides.html#data-exploration-and-visualization-1",
+    "href": "slides.html#data-exploration-and-visualization-1",
+    "title": "Present a great story for data science projects",
+    "section": "Data Exploration and Visualization",
+    "text": "Data Exploration and Visualization\nA study was conducted to determine how…"
+  },
+  {
+    "objectID": "slides.html#modeling-and-results",
+    "href": "slides.html#modeling-and-results",
+    "title": "Present a great story for data science projects",
+    "section": "Modeling and Results",
+    "text": "Modeling and Results\n\nExplain your data preprocessing and cleaning steps.\nPresent your key findings in a clear and concise manner.\nUse visuals to support your claims.\nTell a story about what the data reveals."
+  },
+  {
+    "objectID": "slides.html#conclusion",
+    "href": "slides.html#conclusion",
+    "title": "Present a great story for data science projects",
+    "section": "Conclusion",
+    "text": "Conclusion\n\nSummarize your key findings.\nDiscuss the implications of your results."
+  },
+  {
+    "objectID": "slides.html#references",
+    "href": "slides.html#references",
+    "title": "Present a great story for data science projects",
+    "section": "References",
+    "text": "References"
   }
 ]

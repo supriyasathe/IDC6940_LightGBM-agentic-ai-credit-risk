@@ -33,7 +33,8 @@ This code chunk is loading all libraries being used in the project.
 packages <- c("tidyverse", "skimr", "knitr", "ggthemes", "ggrepel", "dslabs")
 # install.packages(packages)
 # Load Libraries
-lapply(packages, library, character.only = TRUE)
+lapply(packages, library, 
+character.only = TRUE)
 # Set seed for reproducibility
 set.seed(123)
 ```
