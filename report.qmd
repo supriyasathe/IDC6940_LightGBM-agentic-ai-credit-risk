@@ -7,22 +7,28 @@ bibliography: references.bib
 link-citations: true
 ---
 
-This project is focused on experimenting with the code chunks to ingest and analyse the dataset as a preliminary analysis.
 
-For the project remember to add the appropriate flags into the code chunks otherwise everything will be rendered.
+## 1. Introduction
 
-Below are example of flags for the code chunk also a code chunk with double curly brackest is not executable {{r}}:
+A vital role for financial institutions is evaluating credit risk, which has a direct impact on lending choices, portfolio performance, and regulatory compliance. Because they are straightforward and easy to understand, traditional credit scoring techniques like logistic regression have gained widespread use. These conventional models, however, find it difficult to account for nonlinear patterns and complicated borrower behaviors as financial data grows in size, complexity, and heterogeneity.
 
-```{{r}}
-#| code-fold: true
-#| message: false
-#| warning: false
-#| output: false
-```
+The predictive accuracy of credit risk modeling has greatly increased as a result of recent developments in machine learning, especially ensemble-based techniques like Gradient Boosting Decision Trees (GBDT). Among these techniques, the Light Gradient Boosting Machine (LightGBM) has shown itself to be a very effective and scalable framework that can deal with imbalanced and high-dimensional credit datasets. Although LightGBM performs well, it is frequently perceived as a "black-box" paradigm, which restricts transparency and undermines confidence among auditors, regulators, and business users.
 
-## Load Libraries
+This paper suggests an Explainable Agentic AI framework for credit risk assessment utilizing LightGBM in order to overcome these issues. The framework combines an intelligent agentic decision layer that analyzes model predictions, produces insightful explanations, and suggests suitable courses of action with SHAP-based explainability. The suggested approach seeks to facilitate responsible and explicable credit decision-making in regulated financial environments by fusing prediction accuracy, transparency, and adaptive reasoning.
 
-This code chunk is loading all libraries being used in the project.
+---
+
+## 2. Methods
+
+
+
+---
+
+## 3. Analysis and Results
+
+Import the project dependencies
+
+<!-- This code chunk is loading all libraries being used in the project. -->
 
 ```{r}
 #| code-fold: true
@@ -33,14 +39,13 @@ This code chunk is loading all libraries being used in the project.
 packages <- c("tidyverse", "skimr", "knitr", "ggthemes", "ggrepel", "dslabs")
 # install.packages(packages)
 # Load Libraries
-lapply(packages, library, 
-character.only = TRUE)
+lapply(packages, library, character.only = TRUE)
 # Set seed for reproducibility
 set.seed(123)
 ```
 
 
-## Import Dataset
+### 3.1. Data Ingestion
 
 This code chunk is importing the dataset from the folder datasets which it is finding at the root of the github repo and it is concatenating the path to run the function read_csv from tidyverse.
 
@@ -64,13 +69,6 @@ credit_path <- file.path(datasets_path, "credit_risk_dataset.csv")
 credit1 = read_csv(credit_path, show_col_types = FALSE)
 ```
 
-NOTE:
-
-these shorcuts are helpfull when debugging or testing code chunks
-
-- Ctrl + Enter (Windows/Linux) or Cmd + Enter (Mac) will execute the current line the cursor is on.
-- Shift + Enter (Windows/Linux and Mac) will execute the currently highlighted multiple lines of code.
-
 
 ```{r}
 summary(credit1)
@@ -84,3 +82,14 @@ we found that:
 - person_emp_length has 895 NA values
 - loan_int_rate has 3116 NA values
 
+---
+
+## 4. Conclusion
+
+
+---
+
+### References
+
+::: {#refs}
+:::
