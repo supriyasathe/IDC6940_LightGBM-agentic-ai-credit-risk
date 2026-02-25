@@ -349,6 +349,7 @@ div.csl-indent {
   <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">2. Methods</a></li>
   <li><a href="#analysis-and-results" id="toc-analysis-and-results" class="nav-link" data-scroll-target="#analysis-and-results">3. Analysis and Results</a>
   <ul class="collapse">
+  <li><a href="#exploratory-data-analysis-eda" id="toc-exploratory-data-analysis-eda" class="nav-link" data-scroll-target="#exploratory-data-analysis-eda">3.1 Exploratory Data Analysis (EDA) :</a></li>
   <li><a href="#data-ingestion" id="toc-data-ingestion" class="nav-link" data-scroll-target="#data-ingestion">3.1. Data Ingestion</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">4. Conclusion</a>
@@ -400,44 +401,228 @@ div.csl-indent {
 </section>
 <section id="analysis-and-results" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-and-results">3. Analysis and Results</h2>
+<section id="exploratory-data-analysis-eda" class="level3">
+<h3 class="anchored" data-anchor-id="exploratory-data-analysis-eda">3.1 Exploratory Data Analysis (EDA) :</h3>
+<section id="data-description" class="level4">
+<h4 class="anchored" data-anchor-id="data-description">3.1.1 Data Description :</h4>
+<p>The Credit Risk Dataset, which includes 32,581 borrower records and 12 characteristics pertaining to financial, credit history, and demographic data, is used in this study. Binary in nature, the target variable loan_status indicates whether a borrower is likely to default (1) or not (0). Income, loan amount, interest rate, length of employment, home ownership status, and loan purpose are among the numerical and qualitative variables included in the dataset. Its reasonable size and realistic structure make it ideal for using LightGBM and assessing explainable, agentic AI decision-making in credit risk prediction.</p>
+<section id="dataset-dimensions--" class="level5">
+<h5 class="anchored" data-anchor-id="dataset-dimensions--">Dataset Dimensions -</h5>
+<p>Observations (rows): 32,581</p>
+<p>Features (columns): 12</p>
+<p>Target Variable: loan_status</p>
+</section>
+<section id="target-variable--" class="level5">
+<h5 class="anchored" data-anchor-id="target-variable--">Target Variable -</h5>
+<p>loan_status</p>
+<p>1 = High Risk (Default)</p>
+<p>0 = Low Risk (Non-Default)</p>
+</section>
+</section>
+<section id="data-ingestion-python" class="level4">
+<h4 class="anchored" data-anchor-id="data-ingestion-python">3.1.2 Data Ingestion (Python) :</h4>
+<p>The pandas package in Python was used to load the dataset. A dataframe called credit1 was created by reading the file credit_risk_dataset.csv. The dataset was first explored by examining column data types, previewing the first few records, and determining its dimensions. To guarantee effective ingestion and comprehend variable composition, the dataset structure was validated using the.shape(),.head(), and.info() functions.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_git_root(start<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> start <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        start <span class="op">=</span> os.getcwd()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> os.path.abspath(start)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.isdir(os.path.join(path, <span class="st">".git"</span>)):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> path</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        parent <span class="op">=</span> os.path.dirname(path)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> parent <span class="op">==</span> path:</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="st">"No .git directory found — are you inside a Git repository?"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> parent</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>repo_root <span class="op">=</span> find_git_root()</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>datasets_path <span class="op">=</span> os.path.join(repo_root, <span class="st">"datasets"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading the datafile credit_risk_dataset.csv</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>credit_path <span class="op">=</span> os.path.join(datasets_path, <span class="st">"credit_risk_dataset.csv"</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>credit1 <span class="op">=</span> pd.read_csv(credit_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+</section>
+<section id="summary-statistics" class="level4">
+<h4 class="anchored" data-anchor-id="summary-statistics">3.1.3 Summary Statistics :</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>credit1.describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         person_age  ...  cb_person_cred_hist_length
+count  32581.000000  ...                32581.000000
+mean      27.734600  ...                    5.804211
+std        6.348078  ...                    4.055001
+min       20.000000  ...                    2.000000
+25%       23.000000  ...                    3.000000
+50%       26.000000  ...                    4.000000
+75%       30.000000  ...                    8.000000
+max      144.000000  ...                   30.000000
+
+[8 rows x 8 columns]</code></pre>
+</div>
+</div>
+<p>For a more thorough summary:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skimpy <span class="im">import</span> skim</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>skim(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>╭─────────────────────────────── skimpy summary ───────────────────────────────╮
+│          Data Summary                Data Types                              │
+│ ┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓ ┏━━━━━━━━━━━━━┳━━━━━━━┓                       │
+│ ┃ Dataframe         ┃ Values ┃ ┃ Column Type ┃ Count ┃                       │
+│ ┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩ ┡━━━━━━━━━━━━━╇━━━━━━━┩                       │
+│ │ Number of rows    │ 32581  │ │ int64       │ 5     │                       │
+│ │ Number of columns │ 12     │ │ string      │ 4     │                       │
+│ └───────────────────┴────────┘ │ float64     │ 3     │                       │
+│                                └─────────────┴───────┘                       │
+│                                   number                                     │
+│ ┏━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━┳━━━━━┳━━━━━━┳━━━━━┳━━━━━━┳━━━━━┓  │
+│ ┃ colu ┃      ┃      ┃      ┃      ┃      ┃     ┃      ┃     ┃      ┃ his ┃  │
+│ ┃ mn   ┃ NA   ┃ NA % ┃ mean ┃ sd   ┃ p0   ┃ p25 ┃ p50  ┃ p75 ┃ p100 ┃ t   ┃  │
+│ ┡━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━╇━━━━━╇━━━━━━╇━━━━━╇━━━━━━╇━━━━━┩  │
+│ │ pers │    0 │    0 │ 27.7 │ 6.34 │   20 │  23 │   26 │  30 │  144 │  █  │  │
+│ │ on_a │      │      │    3 │    8 │      │     │      │     │      │     │  │
+│ │  ge  │      │      │      │      │      │     │      │     │      │     │  │
+│ │ pers │    0 │    0 │ 6607 │ 6198 │ 4000 │ 385 │ 5500 │ 792 │ 6000 │  █  │  │
+│ │ on_i │      │      │    0 │    0 │      │  00 │    0 │  00 │  000 │     │  │
+│ │ ncom │      │      │      │      │      │     │      │     │      │     │  │
+│ │  e   │      │      │      │      │      │     │      │     │      │     │  │
+│ │ pers │  895 │ 2.74 │ 4.79 │ 4.14 │    0 │   2 │    4 │   7 │  123 │  █  │  │
+│ │ on_e │      │ 6999 │      │    3 │      │     │      │     │      │     │  │
+│ │ mp_l │      │ 7851 │      │      │      │     │      │     │      │     │  │
+│ │ engt │      │ 5085 │      │      │      │     │      │     │      │     │  │
+│ │  h   │      │   47 │      │      │      │     │      │     │      │     │  │
+│ │ loan │    0 │    0 │ 9589 │ 6322 │  500 │ 500 │ 8000 │ 122 │ 3500 │ █▇▄ │  │
+│ │ _amn │      │      │      │      │      │   0 │      │  00 │    0 │ ▁▁  │  │
+│ │  t   │      │      │      │      │      │     │      │     │      │     │  │
+│ │ loan │ 3116 │ 9.56 │ 11.0 │ 3.24 │ 5.42 │ 7.9 │ 10.9 │ 13. │ 23.2 │ ▇▇█ │  │
+│ │ _int │      │ 3856 │    1 │      │      │     │    9 │  47 │    2 │ ▄▁  │  │
+│ │ _rat │      │ 2352 │      │      │      │     │      │     │      │     │  │
+│ │  e   │      │ 2912 │      │      │      │     │      │     │      │     │  │
+│ │      │      │    1 │      │      │      │     │      │     │      │     │  │
+│ │ loan │    0 │    0 │ 0.21 │ 0.41 │    0 │   0 │    0 │   0 │    1 │  █  │  │
+│ │ _sta │      │      │   82 │    3 │      │     │      │     │      │  ▂  │  │
+│ │ tus  │      │      │      │      │      │     │      │     │      │     │  │
+│ │ loan │    0 │    0 │ 0.17 │ 0.10 │    0 │ 0.0 │ 0.15 │ 0.2 │ 0.83 │ █▇▂ │  │
+│ │ _per │      │      │   02 │   68 │      │   9 │      │   3 │      │     │  │
+│ │ cent │      │      │      │      │      │     │      │     │      │     │  │
+│ │ _inc │      │      │      │      │      │     │      │     │      │     │  │
+│ │ ome  │      │      │      │      │      │     │      │     │      │     │  │
+│ │ cb_p │    0 │    0 │ 5.80 │ 4.05 │    2 │   3 │    4 │   8 │   30 │ █▃▁ │  │
+│ │ erso │      │      │    4 │    5 │      │     │      │     │      │     │  │
+│ │ n_cr │      │      │      │      │      │     │      │     │      │     │  │
+│ │ ed_h │      │      │      │      │      │     │      │     │      │     │  │
+│ │ ist_ │      │      │      │      │      │     │      │     │      │     │  │
+│ │ leng │      │      │      │      │      │     │      │     │      │     │  │
+│ │  th  │      │      │      │      │      │     │      │     │      │     │  │
+│ └──────┴──────┴──────┴──────┴──────┴──────┴─────┴──────┴─────┴──────┴─────┘  │
+│                                   string                                     │
+│ ┏━━━━━━━┳━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━┓  │
+│ ┃       ┃    ┃      ┃       ┃       ┃       ┃       ┃ char ┃       ┃ tota ┃  │
+│ ┃       ┃    ┃      ┃       ┃       ┃       ┃       ┃ s    ┃ words ┃ l    ┃  │
+│ ┃ colum ┃    ┃      ┃ short ┃ longe ┃       ┃       ┃ per  ┃ per   ┃ word ┃  │
+│ ┃ n     ┃ NA ┃ NA % ┃ est   ┃ st    ┃ min   ┃ max   ┃ row  ┃ row   ┃ s    ┃  │
+│ ┡━━━━━━━╇━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━┩  │
+│ │ perso │  0 │    0 │  OWN  │ MORTG │ MORTG │ RENT  │ 5.57 │     1 │ 3258 │  │
+│ │ n_hom │    │      │       │  AGE  │  AGE  │       │      │       │    1 │  │
+│ │ e_own │    │      │       │       │       │       │      │       │      │  │
+│ │ ershi │    │      │       │       │       │       │      │       │      │  │
+│ │   p   │    │      │       │       │       │       │      │       │      │  │
+│ │ loan_ │  0 │    0 │ MEDIC │ DEBTC │ DEBTC │ VENTU │ 10.1 │     1 │ 3258 │  │
+│ │ inten │    │      │  AL   │ ONSOL │ ONSOL │  RE   │      │       │    1 │  │
+│ │   t   │    │      │       │ IDATI │ IDATI │       │      │       │      │  │
+│ │       │    │      │       │  ON   │  ON   │       │      │       │      │  │
+│ │ loan_ │  0 │    0 │   D   │   D   │   A   │   G   │    1 │     1 │ 3258 │  │
+│ │ grade │    │      │       │       │       │       │      │       │    1 │  │
+│ │ cb_pe │  0 │    0 │   Y   │   Y   │   N   │   Y   │    1 │     1 │ 3258 │  │
+│ │ rson_ │    │      │       │       │       │       │      │       │    1 │  │
+│ │ defau │    │      │       │       │       │       │      │       │      │  │
+│ │ lt_on │    │      │       │       │       │       │      │       │      │  │
+│ │ _file │    │      │       │       │       │       │      │       │      │  │
+│ └───────┴────┴──────┴───────┴───────┴───────┴───────┴──────┴───────┴──────┘  │
+╰──────────────────────────────────── End ─────────────────────────────────────╯</code></pre>
+</div>
+</div>
+</section>
+<section id="missing-value-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="missing-value-analysis">3.1.4 Missing Value Analysis :</h4>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>credit1.isna().<span class="bu">sum</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>person_age                       0
+person_income                    0
+person_home_ownership            0
+person_emp_length              895
+loan_intent                      0
+loan_grade                       0
+loan_amnt                        0
+loan_int_rate                 3116
+loan_status                      0
+loan_percent_income              0
+cb_person_default_on_file        0
+cb_person_cred_hist_length       0
+dtype: int64</code></pre>
+</div>
+</div>
+<p>person_emp_length → 895 missing values</p>
+<p>loan_int_rate → 3,116 missing values</p>
+<p>Complete data is present in all other variables.</p>
+<p>Preprocessing will use median imputation to handle these missing values in order to maintain the robustness of the distribution.</p>
+</section>
+<section id="target-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="target-distribution">3.1.5 Target Distribution :</h4>
 <p>Import the project dependencies</p>
 <!-- This code chunk is loading all libraries being used in the project. -->
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"skimr"</span>, <span class="st">"knitr"</span>, <span class="st">"ggthemes"</span>, <span class="st">"ggrepel"</span>, <span class="st">"dslabs"</span>)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(packages)</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Libraries</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(packages, library, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for reproducibility</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"skimr"</span>, <span class="st">"knitr"</span>, <span class="st">"ggthemes"</span>, <span class="st">"ggrepel"</span>, <span class="st">"dslabs"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(packages)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Libraries</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(packages, library, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for reproducibility</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
+</section>
+</section>
 <section id="data-ingestion" class="level3">
 <h3 class="anchored" data-anchor-id="data-ingestion">3.1. Data Ingestion</h3>
 <p>This code chunk is importing the dataset from the folder datasets which it is finding at the root of the github repo and it is concatenating the path to run the function read_csv from tidyverse.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>find_git_root <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">start =</span> <span class="fu">getwd</span>()) {</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  path <span class="ot">&lt;-</span> <span class="fu">normalizePath</span>(start, <span class="at">winslash =</span> <span class="st">"/"</span>, <span class="at">mustWork =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (path <span class="sc">!=</span> <span class="fu">dirname</span>(path)) {</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">dir.exists</span>(<span class="fu">file.path</span>(path, <span class="st">".git"</span>))) <span class="fu">return</span>(path)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    path <span class="ot">&lt;-</span> <span class="fu">dirname</span>(path)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"No .git directory found — are you inside a Git repository?"</span>)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>repo_root <span class="ot">&lt;-</span> <span class="fu">find_git_root</span>()</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>datasets_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(repo_root, <span class="st">"datasets"</span>)</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading the datafile credit_risk_dataset.csv</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>credit_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datasets_path, <span class="st">"credit_risk_dataset.csv"</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>credit1 <span class="ot">=</span> <span class="fu">read_csv</span>(credit_path, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>find_git_root <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">start =</span> <span class="fu">getwd</span>()) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  path <span class="ot">&lt;-</span> <span class="fu">normalizePath</span>(start, <span class="at">winslash =</span> <span class="st">"/"</span>, <span class="at">mustWork =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (path <span class="sc">!=</span> <span class="fu">dirname</span>(path)) {</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">dir.exists</span>(<span class="fu">file.path</span>(path, <span class="st">".git"</span>))) <span class="fu">return</span>(path)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    path <span class="ot">&lt;-</span> <span class="fu">dirname</span>(path)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"No .git directory found — are you inside a Git repository?"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>repo_root <span class="ot">&lt;-</span> <span class="fu">find_git_root</span>()</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>datasets_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(repo_root, <span class="st">"datasets"</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading the datafile credit_risk_dataset.csv</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>credit_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datasets_path, <span class="st">"credit_risk_dataset.csv"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>credit1 <span class="ot">=</span> <span class="fu">read_csv</span>(credit_path, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   person_age     person_income     person_home_ownership person_emp_length
  Min.   : 20.00   Min.   :   4000   Length:32581          Min.   :  0.00   
@@ -472,7 +657,7 @@ div.csl-indent {
  Max.   :30.000            
                            </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 12
   person_age person_income person_home_ownership person_emp_length loan_intent
@@ -487,8 +672,8 @@ div.csl-indent {
 #   loan_status &lt;dbl&gt;, loan_percent_income &lt;dbl&gt;,
 #   cb_person_default_on_file &lt;chr&gt;, cb_person_cred_hist_length &lt;dbl&gt;</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count total NAs per column</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(credit1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count total NAs per column</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(credit1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                person_age              person_income 
                          0                          0 
@@ -509,6 +694,153 @@ div.csl-indent {
 <li>person_emp_length has 895 NA values</li>
 <li>loan_int_rate has 3116 NA values</li>
 </ul>
+<p>test data ingestion using python</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># renv::use_python(type = "conda", envname = "myenv")</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># reticulate::py_install("numpy")</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># reticulate::py_install("pandas")</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># reticulate::py_install("skimpy")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install pandas numpy</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_git_root(start<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> start <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        start <span class="op">=</span> os.getcwd()</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> os.path.abspath(start)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.isdir(os.path.join(path, <span class="st">".git"</span>)):</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> path</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        parent <span class="op">=</span> os.path.dirname(path)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> parent <span class="op">==</span> path:</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="st">"No .git directory found — are you inside a Git repository?"</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> parent</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>repo_root <span class="op">=</span> find_git_root()</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>datasets_path <span class="op">=</span> os.path.join(repo_root, <span class="st">"datasets"</span>)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading the datafile credit_risk_dataset.csv</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>credit_path <span class="op">=</span> os.path.join(datasets_path, <span class="st">"credit_risk_dataset.csv"</span>)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>credit1 <span class="op">=</span> pd.read_csv(credit_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skimpy <span class="im">import</span> skim</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>skim(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>╭─────────────────────────────── skimpy summary ───────────────────────────────╮
+│          Data Summary                Data Types                              │
+│ ┏━━━━━━━━━━━━━━━━━━━┳━━━━━━━━┓ ┏━━━━━━━━━━━━━┳━━━━━━━┓                       │
+│ ┃ Dataframe         ┃ Values ┃ ┃ Column Type ┃ Count ┃                       │
+│ ┡━━━━━━━━━━━━━━━━━━━╇━━━━━━━━┩ ┡━━━━━━━━━━━━━╇━━━━━━━┩                       │
+│ │ Number of rows    │ 32581  │ │ int64       │ 5     │                       │
+│ │ Number of columns │ 12     │ │ string      │ 4     │                       │
+│ └───────────────────┴────────┘ │ float64     │ 3     │                       │
+│                                └─────────────┴───────┘                       │
+│                                   number                                     │
+│ ┏━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━┳━━━━━┳━━━━━━┳━━━━━┳━━━━━━┳━━━━━┓  │
+│ ┃ colu ┃      ┃      ┃      ┃      ┃      ┃     ┃      ┃     ┃      ┃ his ┃  │
+│ ┃ mn   ┃ NA   ┃ NA % ┃ mean ┃ sd   ┃ p0   ┃ p25 ┃ p50  ┃ p75 ┃ p100 ┃ t   ┃  │
+│ ┡━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━╇━━━━━╇━━━━━━╇━━━━━╇━━━━━━╇━━━━━┩  │
+│ │ pers │    0 │    0 │ 27.7 │ 6.34 │   20 │  23 │   26 │  30 │  144 │  █  │  │
+│ │ on_a │      │      │    3 │    8 │      │     │      │     │      │     │  │
+│ │  ge  │      │      │      │      │      │     │      │     │      │     │  │
+│ │ pers │    0 │    0 │ 6607 │ 6198 │ 4000 │ 385 │ 5500 │ 792 │ 6000 │  █  │  │
+│ │ on_i │      │      │    0 │    0 │      │  00 │    0 │  00 │  000 │     │  │
+│ │ ncom │      │      │      │      │      │     │      │     │      │     │  │
+│ │  e   │      │      │      │      │      │     │      │     │      │     │  │
+│ │ pers │  895 │ 2.74 │ 4.79 │ 4.14 │    0 │   2 │    4 │   7 │  123 │  █  │  │
+│ │ on_e │      │ 6999 │      │    3 │      │     │      │     │      │     │  │
+│ │ mp_l │      │ 7851 │      │      │      │     │      │     │      │     │  │
+│ │ engt │      │ 5085 │      │      │      │     │      │     │      │     │  │
+│ │  h   │      │   47 │      │      │      │     │      │     │      │     │  │
+│ │ loan │    0 │    0 │ 9589 │ 6322 │  500 │ 500 │ 8000 │ 122 │ 3500 │ █▇▄ │  │
+│ │ _amn │      │      │      │      │      │   0 │      │  00 │    0 │ ▁▁  │  │
+│ │  t   │      │      │      │      │      │     │      │     │      │     │  │
+│ │ loan │ 3116 │ 9.56 │ 11.0 │ 3.24 │ 5.42 │ 7.9 │ 10.9 │ 13. │ 23.2 │ ▇▇█ │  │
+│ │ _int │      │ 3856 │    1 │      │      │     │    9 │  47 │    2 │ ▄▁  │  │
+│ │ _rat │      │ 2352 │      │      │      │     │      │     │      │     │  │
+│ │  e   │      │ 2912 │      │      │      │     │      │     │      │     │  │
+│ │      │      │    1 │      │      │      │     │      │     │      │     │  │
+│ │ loan │    0 │    0 │ 0.21 │ 0.41 │    0 │   0 │    0 │   0 │    1 │  █  │  │
+│ │ _sta │      │      │   82 │    3 │      │     │      │     │      │  ▂  │  │
+│ │ tus  │      │      │      │      │      │     │      │     │      │     │  │
+│ │ loan │    0 │    0 │ 0.17 │ 0.10 │    0 │ 0.0 │ 0.15 │ 0.2 │ 0.83 │ █▇▂ │  │
+│ │ _per │      │      │   02 │   68 │      │   9 │      │   3 │      │     │  │
+│ │ cent │      │      │      │      │      │     │      │     │      │     │  │
+│ │ _inc │      │      │      │      │      │     │      │     │      │     │  │
+│ │ ome  │      │      │      │      │      │     │      │     │      │     │  │
+│ │ cb_p │    0 │    0 │ 5.80 │ 4.05 │    2 │   3 │    4 │   8 │   30 │ █▃▁ │  │
+│ │ erso │      │      │    4 │    5 │      │     │      │     │      │     │  │
+│ │ n_cr │      │      │      │      │      │     │      │     │      │     │  │
+│ │ ed_h │      │      │      │      │      │     │      │     │      │     │  │
+│ │ ist_ │      │      │      │      │      │     │      │     │      │     │  │
+│ │ leng │      │      │      │      │      │     │      │     │      │     │  │
+│ │  th  │      │      │      │      │      │     │      │     │      │     │  │
+│ └──────┴──────┴──────┴──────┴──────┴──────┴─────┴──────┴─────┴──────┴─────┘  │
+│                                   string                                     │
+│ ┏━━━━━━━┳━━━━┳━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━━┳━━━━━━┳━━━━━━━┳━━━━━━┓  │
+│ ┃       ┃    ┃      ┃       ┃       ┃       ┃       ┃ char ┃       ┃ tota ┃  │
+│ ┃       ┃    ┃      ┃       ┃       ┃       ┃       ┃ s    ┃ words ┃ l    ┃  │
+│ ┃ colum ┃    ┃      ┃ short ┃ longe ┃       ┃       ┃ per  ┃ per   ┃ word ┃  │
+│ ┃ n     ┃ NA ┃ NA % ┃ est   ┃ st    ┃ min   ┃ max   ┃ row  ┃ row   ┃ s    ┃  │
+│ ┡━━━━━━━╇━━━━╇━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━━╇━━━━━━╇━━━━━━━╇━━━━━━┩  │
+│ │ perso │  0 │    0 │  OWN  │ MORTG │ MORTG │ RENT  │ 5.57 │     1 │ 3258 │  │
+│ │ n_hom │    │      │       │  AGE  │  AGE  │       │      │       │    1 │  │
+│ │ e_own │    │      │       │       │       │       │      │       │      │  │
+│ │ ershi │    │      │       │       │       │       │      │       │      │  │
+│ │   p   │    │      │       │       │       │       │      │       │      │  │
+│ │ loan_ │  0 │    0 │ MEDIC │ DEBTC │ DEBTC │ VENTU │ 10.1 │     1 │ 3258 │  │
+│ │ inten │    │      │  AL   │ ONSOL │ ONSOL │  RE   │      │       │    1 │  │
+│ │   t   │    │      │       │ IDATI │ IDATI │       │      │       │      │  │
+│ │       │    │      │       │  ON   │  ON   │       │      │       │      │  │
+│ │ loan_ │  0 │    0 │   D   │   D   │   A   │   G   │    1 │     1 │ 3258 │  │
+│ │ grade │    │      │       │       │       │       │      │       │    1 │  │
+│ │ cb_pe │  0 │    0 │   Y   │   Y   │   N   │   Y   │    1 │     1 │ 3258 │  │
+│ │ rson_ │    │      │       │       │       │       │      │       │    1 │  │
+│ │ defau │    │      │       │       │       │       │      │       │      │  │
+│ │ lt_on │    │      │       │       │       │       │      │       │      │  │
+│ │ _file │    │      │       │       │       │       │      │       │      │  │
+│ └───────┴────┴──────┴───────┴───────┴───────┴───────┴──────┴───────┴──────┘  │
+╰──────────────────────────────────── End ─────────────────────────────────────╯</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">2</span>, <span class="fl">0.01</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> r</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  subplot_kw <span class="op">=</span> {<span class="st">'projection'</span>: <span class="st">'polar'</span>} </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>ax.plot(theta, r)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>ax.set_rticks([<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>])</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-polar" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-polar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_files/figure-html/fig-polar-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-polar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: A line plot on a polar axis
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <hr>
 </section>
 </section>
