@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Supriya Sathe (Advisor: Dr.&nbsp;Cohen)">
+<meta name="author" content="Supervisor: Dr.&nbsp;Cohen">
 
-<title>Literature Review – LightGBM Agentic AI Credit Risk</title>
+<title>Explainable Agentic AI for Credit Risk Assessment using LightGBM – LightGBM Agentic AI Credit Risk</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,27 +22,42 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
 }
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -94,35 +110,6 @@ div.csl-indent {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -307,11 +294,11 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./index.html"> 
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
 <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./literature.html" aria-current="page"> 
+    <a class="nav-link" href="./literature.html"> 
 <span class="menu-text">Literature</span></a>
   </li>  
   <li class="nav-item">
@@ -340,7 +327,8 @@ window.Quarto = {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#literature-review" id="toc-literature-review" class="nav-link active" data-scroll-target="#literature-review">Literature Review</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">1. Introduction</a></li>
+  <li><a href="#cheatsheet" id="toc-cheatsheet" class="nav-link" data-scroll-target="#cheatsheet">Cheatsheet</a></li>
   </ul>
 </nav>
     </div>
@@ -350,7 +338,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Literature Review</h1>
+<h1 class="title">Explainable Agentic AI for Credit Risk Assessment using LightGBM</h1>
 </div>
 
 
@@ -358,9 +346,10 @@ window.Quarto = {
 <div class="quarto-title-meta">
 
     <div>
-    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-heading">Authors</div>
     <div class="quarto-title-meta-contents">
              <p><a href="https://github.com/supriyasathe">Supriya Sathe (Advisor: Dr.&nbsp;Cohen)</a> </p>
+             <p>Supervisor: Dr.&nbsp;Cohen </p>
           </div>
   </div>
     
@@ -373,40 +362,35 @@ window.Quarto = {
 </header>
 
 
-<section id="literature-review" class="level2">
-<h2 class="anchored" data-anchor-id="literature-review">Literature Review</h2>
-<p>A major change in perspective is taking place in the field of credit risk management, by adding a dynamic Machine Learning (ML) frameworks that prioritize regulatory interpretability and prediction accuracy replacing static statistical scoring system.</p>
-<p>In the past, logistic modeling and other basic linear models were used for evaluating risk from credit score or assessment . However, Bussmann et al.&nbsp;(2020)<span class="citation" data-cites="bussmann2021explainable"><sup>[<a href="#ref-bussmann2021explainable" role="doc-biblioref">1</a>]</sup></span> suggested that modern artificial intelligence models greatly improved the ability to recognize complicated, dynamic trends in financial organizations. Bussmann et al.&nbsp;(2020)<span class="citation" data-cites="bussmann2021explainable"><sup>[<a href="#ref-bussmann2021explainable" role="doc-biblioref">1</a>]</sup></span> highlighted that these models need to be explained so as to be actually used in handling risks. They demonstrate how model outcomes can be split down into specific feature components by using statistical techniques like SHAP (SHapley Additive exPlanations), enabling management to validate the theories and at the same time derive the choices regarding credit. Shreya and Pathak (2025)<span class="citation" data-cites="shreya2025explainableartificialintelligencecredit"><sup>[<a href="#ref-shreya2025explainableartificialintelligencecredit" role="doc-biblioref">2</a>]</sup></span> support this by emphasizing that XAI is the main link between the efficiency of ML and the integrity standards of modern banking institutions.</p>
-<p>The use of XAI is a solution to worldwide regulations rather than this current technological solution. In their research on the use of XAI in banks, De Lange et al.&nbsp;(2022)<span class="citation" data-cites="de2022explainable"><sup>[<a href="#ref-de2022explainable" role="doc-biblioref">3</a>]</sup></span> pointed out that it is technically challenging to utilize transparent modelling for credit rejections due to the “obligation to explanation” required by standards like the General Data Protection Regulation as per the the laws. According to their study, while collaborative methods like Gradient Boosting deliver high AUC ratings, they need specific explanatory tools (like Waterfall , Agile or Impact charts) trying to provide consumers and the banking industry the fine-grained insights they need for credit score processing</p>
-<p>A diverse approach in the modern world that integrates quantitative data science with business goals and strategy is increasingly being used to analyze current consumer’s evaluations of credit. Oyeyemi et al.&nbsp;(2025)<span class="citation" data-cites="oyeyemiexplainable"><sup>[<a href="#ref-oyeyemiexplainable" role="doc-biblioref">4</a>]</sup></span> support a comprehensive approach in which XAI is a fundamental part of organizational analytics instead of only a post-hoc analysis method. They claim that institutions may more focus accurately correlate their risk profile with economic circumstances by explaining the “why” underlying model results, turning a technical forecast into a useful business insight for the advancement.</p>
-<p>According to current business viewpoints, autonomous technologies will replace the human interpretation in the next generation of credit risk and any other areas as well. The projected growth of corporate credit, according to McKinsey &amp; Company (2025)<span class="citation" data-cites="Nuzzo_Kremer_Tavakol_Harreis"><sup>[<a href="#ref-Nuzzo_Kremer_Tavakol_Harreis" role="doc-biblioref">5</a>]</sup></span>, is “agentic,” in which AI agents control the entire credit procedure—from initial data collection to final decision-making after going through the process—all while enforcing an extensive level of accessibility for consumer’s trust.</p>
-<p>To go further, Kubam (2024)<span class="citation" data-cites="kubam2025agentic"><sup>[<a href="#ref-kubam2025agentic" role="doc-biblioref">6</a>]</sup></span> outlines an algorithm of “Agentic AI” that permits independent, quick, and understandable making of decisions. As a way to maintain manual human-oriented control over the machine even as it grows increasingly autonomous, these agents are built to track their own outcomes and provide simple analyses of their decision making. This project understands this dynamic horizon as the setting in which powerful, transparent models will ultimately work, even if it concentrates on using LightGBM as the primary estimation algorithm.</p>
-<p>Based on the reviewed literature, I think there is still a critical need for frameworks that can handle the particular characteristics of banking information (such as disparities in classes and classification characteristics) without losing accessibility towards customers, even though the financial services sector is quickly trying to move to complicated, high-speed algorithms like LightGBM. As developing a LightGBM pipeline that makes use of Shapley values <span class="math inline">\((\phi_i)\)</span> to offer a strong auditing trail for credit, this project covers that gap and assures that the algorithm is both “state-of-the-art” in terms efficiency and “state-of-the-compliant” in terms of accessibility.</p>
-
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">1. Introduction</h2>
+<p>A vital role for financial institutions is evaluating credit risk, which has a direct impact on lending choices, portfolio performance, and regulatory compliance. Because they are straightforward and easy to understand, traditional credit scoring techniques like logistic regression have gained widespread use. These conventional models, however, find it difficult to account for nonlinear patterns and complicated borrower behaviors as financial data grows in size, complexity, and heterogeneity.</p>
+<p>The predictive accuracy of credit risk modeling has greatly increased as a result of recent developments in machine learning, especially ensemble-based techniques like Gradient Boosting Decision Trees (GBDT). Among these techniques, the Light Gradient Boosting Machine (LightGBM) has shown itself to be a very effective and scalable framework that can deal with imbalanced and high-dimensional credit datasets. Although LightGBM performs well, it is frequently perceived as a “black-box” paradigm, which restricts transparency and undermines confidence among auditors, regulators, and business users.</p>
+<p>This paper suggests an Explainable Agentic AI framework for credit risk assessment utilizing LightGBM in order to overcome these issues. The framework combines an intelligent agentic decision layer that analyzes model predictions, produces insightful explanations, and suggests suitable courses of action with SHAP-based explainability. The suggested approach seeks to facilitate responsible and explicable credit decision-making in regulated financial environments by fusing prediction accuracy, transparency, and adaptive reasoning.</p>
+<hr>
+</section>
+<section id="cheatsheet" class="level2">
+<h2 class="anchored" data-anchor-id="cheatsheet">Cheatsheet</h2>
+<p>This project is focused on experimenting with the code chunks to ingest and analyse the dataset as a preliminary analysis.</p>
+<p>For the project remember to add the appropriate flags into the code chunks otherwise everything will be rendered.</p>
+<p>Below are example of flags for the code chunk also a code chunk with double curly brackest is not executable {{r}}:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-fold: true</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">#| message: false</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">#| warning: false</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#| output: false</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>NOTE:</p>
+<p>these shorcuts are helpfull when debugging or testing code chunks</p>
+<ul>
+<li>Ctrl + Enter (Windows/Linux) or Cmd + Enter (Mac) will execute the current line the cursor is on.</li>
+<li>Shift + Enter (Windows/Linux and Mac) will execute the currently highlighted multiple lines of code.</li>
+</ul>
 
 
 </section>
 
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
-<div id="ref-bussmann2021explainable" class="csl-entry" role="listitem">
-1. Bussmann, N., Giudici, P., Marinelli, D., &amp; Papenbrock, J. (2021). Explainable machine learning in credit risk management. <em>Computational Economics</em>, <em>57</em>(1), 203–216.
-</div>
-<div id="ref-shreya2025explainableartificialintelligencecredit" class="csl-entry" role="listitem">
-2. Shreya, &amp; Pathak, H. (2025). <em>Explainable artificial intelligence credit risk assessment using machine learning</em>. <a href="https://arxiv.org/abs/2506.19383">https://arxiv.org/abs/2506.19383</a>
-</div>
-<div id="ref-de2022explainable" class="csl-entry" role="listitem">
-3. De Lange, P. E., Melsom, B., Vennerød, C. B., &amp; Westgaard, S. (2022). Explainable AI for credit assessment in banks. <em>Journal of Risk and Financial Management</em>, <em>15</em>(12), 556.
-</div>
-<div id="ref-oyeyemiexplainable" class="csl-entry" role="listitem">
-4. Oyeyemi, D. O., Okosieme, O. O., Idowu-Kunlere, O., Julius, E. A., &amp; Nwinyi, I. P. (n.d.). <em>Explainable AI for credit risk assessment: Integrating machine learning with business analytics</em>.
-</div>
-<div id="ref-Nuzzo_Kremer_Tavakol_Harreis" class="csl-entry" role="listitem">
-5. Nuzzo, A., Kremer, A., Tavakol, A., Harreis, H., Schneider, S., &amp; Beitz, S. (2025). <em>The future is agentic: AI’s role in the end-to-end corporate credit process</em>. McKinsey. <a href="https://www.mckinsey.com/capabilities/risk-and-resilience/our-insights/the-future-is-agentic-ais-role-in-the-end-to-end-corporate-credit-process">https://www.mckinsey.com/capabilities/risk-and-resilience/our-insights/the-future-is-agentic-ais-role-in-the-end-to-end-corporate-credit-process</a>
-</div>
-<div id="ref-kubam2025agentic" class="csl-entry" role="listitem">
-6. Kubam, C. S. (2025). Agentic AI for autonomous, explainable, and real-time credit risk decision-making. <em>arXiv Preprint arXiv:2601.00818</em>.
-</div>
-</div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     // Ensure there is a toggle, if there isn't float one in the top right
