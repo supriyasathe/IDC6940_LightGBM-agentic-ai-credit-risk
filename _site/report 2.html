@@ -60,7 +60,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
-  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -391,20 +390,9 @@ div.csl-indent {
 
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">1. Introduction</h2>
-<p>Evaluation of credit risk is vital for the financial services industry because, it is required to avoid risks and maintain compliance with regulations, organizations have to accurately predict a borrower’s likelihood of failure while re-payment. Because they are straightforward and easy to understand for anyone, typical evaluation methods like systems based on rules and regression analysis have been often used in AI world. Modern advancement in machine learning, although have shown that the hierarchical (structural) financial data can now be predicted with significant advantages.</p>
-<p>The Risk of default Assessment, which measures a lender’s probability count of defaulting lenders, it is an important aspect of organizational stability in the technological current days in financial environment. The industry has already started moving from restrictive rule-wise structures to complicated Machine Learning (ML) architectures, as stated by Shreya and Pathak (2025)<span class="citation" data-cites="shreya2025explainableartificialintelligencecredit"><sup>[<a href="#ref-shreya2025explainableartificialintelligencecredit" role="doc-biblioref">1</a>]</sup></span>. Although the fact is these models provide past unheard-of precision in forecasting, they are frequently addressed to as “black boxes.” The paper uses Explainable Artificial Intelligence (XAI) to overcome the visibility gap and LightGBM to develop a robust credit assessment engine.</p>
-<p>According to author de Lange et al.&nbsp;(2022)<span class="citation" data-cites="de2022explainable"><sup>[<a href="#ref-de2022explainable" role="doc-biblioref">2</a>]</sup></span> and Bussmann et al.&nbsp;(2020)<span class="citation" data-cites="bussmann2021explainable"><sup>[<a href="#ref-bussmann2021explainable" role="doc-biblioref">3</a>]</sup></span>, financial businesses should offer a “Right to justification” as a way to make sure that risk management is the responsibility for both moral and verifiable. This flexibility is not just a technical preference in organization the but also a legal need. In a similar vein, de Lange et al.&nbsp;(2022)<span class="citation" data-cites="de2022explainable"><sup>[<a href="#ref-de2022explainable" role="doc-biblioref">2</a>]</sup></span> demonstrate that explainable AI methods can maintain accurate predictions while working on to improve an accessibility in financial systems nowadays. The significance of combining the both concepts explainable machine learning with business analytics for ethical evaluation of credit risk defaulters have been demonstrated by recent studies by Shreya and Pathak (2025)<span class="citation" data-cites="shreya2025explainableartificialintelligencecredit"><sup>[<a href="#ref-shreya2025explainableartificialintelligencecredit" role="doc-biblioref">1</a>]</sup></span> and Oyeyemi et al.&nbsp;(2025)<span class="citation" data-cites="oyeyemiexplainable"><sup>[<a href="#ref-oyeyemiexplainable" role="doc-biblioref">4</a>]</sup></span>.</p>
-<p>Here are the important steps to develop a machine learning-based credit risk model to build overall good performance:</p>
-<ol type="1">
-<li>The first is collecting and preparing the data, including the encrypting variables with categories and finding the missing values.</li>
-<li>Dividing the dataset into two subsets for testing and training.</li>
-<li>Applying the training data to train for the LightGBM classifier.</li>
-<li>Assessing predictive performance for the the model with metrics like ROC-AUC, accuracy, precision, recall, and F1-score.</li>
-<li>Utilizing SHAP-based explanation and characteristic significance for analyzing the model forecasts.</li>
-</ol>
-<p>This method provides that the model is easy to understand, versatile, and trustworthy. The predictive model’s accuracy on unidentified information is determined using model evaluation approaches including cross-validity and train-test partitioning.</p>
-<p>This project is using the Light Gradient Boosting Machine (LightGBM) programmed in Python langauge to create an Explainable Credit Risk Assessment system, driven by major breakthroughs in both research and business. LightGBM is determined because it performs well on structured table type datasets and is effective and versatile way. The Credit Risk Dataset’s consumer demographic details, banking, and credit historical information will be used by the algorithm to forecast defaults listing on loans potential. Explainable methods like SHAP will be used to understand both specific and worldwide projections in order to assure integrity and transperency.</p>
-<p>The objective of this study is to show how explainable artificial intelligence concepts may be integrated with efficient boosting algorithms to create precise, accessible, and insightful credit risk evaluation solutions to avoid the losses of financial organization.</p>
+<p>A vital role for financial institutions is evaluating credit risk, which has a direct impact on lending choices, portfolio performance, and regulatory compliance. Because they are straightforward and easy to understand, traditional credit scoring techniques like logistic regression have gained widespread use. These conventional models, however, find it difficult to account for nonlinear patterns and complicated borrower behaviors as financial data grows in size, complexity, and heterogeneity.</p>
+<p>The predictive accuracy of credit risk modeling has greatly increased as a result of recent developments in machine learning, especially ensemble-based techniques like Gradient Boosting Decision Trees (GBDT). Among these techniques, the Light Gradient Boosting Machine (LightGBM) has shown itself to be a very effective and scalable framework that can deal with imbalanced and high-dimensional credit datasets. Although LightGBM performs well, it is frequently perceived as a “black-box” paradigm, which restricts transparency and undermines confidence among auditors, regulators, and business users.</p>
+<p>This paper suggests an Explainable Agentic AI framework for credit risk assessment utilizing LightGBM in order to overcome these issues. The framework combines an intelligent agentic decision layer that analyzes model predictions, produces insightful explanations, and suggests suitable courses of action with SHAP-based explainability. The suggested approach seeks to facilitate responsible and explicable credit decision-making in regulated financial environments by fusing prediction accuracy, transparency, and adaptive reasoning.</p>
 <hr>
 </section>
 <section id="methods" class="level2">
@@ -439,29 +427,28 @@ div.csl-indent {
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skimpy <span class="im">import</span> skim</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_git_root(start<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> start <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>        start <span class="op">=</span> os.getcwd()</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> os.path.abspath(start)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.isdir(os.path.join(path, <span class="st">".git"</span>)):</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> path</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        parent <span class="op">=</span> os.path.dirname(path)</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> parent <span class="op">==</span> path:</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="st">"No .git directory found — are you inside a Git repository?"</span>)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> parent</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>repo_root <span class="op">=</span> find_git_root()</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>datasets_path <span class="op">=</span> os.path.join(repo_root, <span class="st">"datasets"</span>)</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading the datafile credit_risk_dataset.csv</span></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>credit_path <span class="op">=</span> os.path.join(datasets_path, <span class="st">"credit_risk_dataset.csv"</span>)</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>credit1 <span class="op">=</span> pd.read_csv(credit_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_git_root(start<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> start <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>        start <span class="op">=</span> os.getcwd()</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> os.path.abspath(start)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.isdir(os.path.join(path, <span class="st">".git"</span>)):</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> path</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>        parent <span class="op">=</span> os.path.dirname(path)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> parent <span class="op">==</span> path:</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="st">"No .git directory found — are you inside a Git repository?"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> parent</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>repo_root <span class="op">=</span> find_git_root()</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>datasets_path <span class="op">=</span> os.path.join(repo_root, <span class="st">"datasets"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading the datafile credit_risk_dataset.csv</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>credit_path <span class="op">=</span> os.path.join(datasets_path, <span class="st">"credit_risk_dataset.csv"</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>credit1 <span class="op">=</span> pd.read_csv(credit_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
@@ -862,19 +849,8 @@ Figure&nbsp;1: A line plot on a polar axis
 <hr>
 <section id="references" class="level3">
 <h3 class="anchored" data-anchor-id="references">References</h3>
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
-<div id="ref-shreya2025explainableartificialintelligencecredit" class="csl-entry" role="listitem">
-1. Shreya, &amp; Pathak, H. (2025). <em>Explainable artificial intelligence credit risk assessment using machine learning</em>. <a href="https://arxiv.org/abs/2506.19383">https://arxiv.org/abs/2506.19383</a>
-</div>
-<div id="ref-de2022explainable" class="csl-entry" role="listitem">
-2. De Lange, P. E., Melsom, B., Vennerød, C. B., &amp; Westgaard, S. (2022). Explainable AI for credit assessment in banks. <em>Journal of Risk and Financial Management</em>, <em>15</em>(12), 556.
-</div>
-<div id="ref-bussmann2021explainable" class="csl-entry" role="listitem">
-3. Bussmann, N., Giudici, P., Marinelli, D., &amp; Papenbrock, J. (2021). Explainable machine learning in credit risk management. <em>Computational Economics</em>, <em>57</em>(1), 203–216.
-</div>
-<div id="ref-oyeyemiexplainable" class="csl-entry" role="listitem">
-4. Oyeyemi, D. O., Okosieme, O. O., Idowu-Kunlere, O., Julius, E. A., &amp; Nwinyi, I. P. (n.d.). <em>Explainable AI for credit risk assessment: Integrating machine learning with business analytics</em>.
-</div>
+<div id="refs" role="list">
+
 </div>
 
 

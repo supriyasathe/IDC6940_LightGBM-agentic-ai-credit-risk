@@ -10,11 +10,25 @@ link-citations: true
 
 ## 1. Introduction
 
-A vital role for financial institutions is evaluating credit risk, which has a direct impact on lending choices, portfolio performance, and regulatory compliance. Because they are straightforward and easy to understand, traditional credit scoring techniques like logistic regression have gained widespread use. These conventional models, however, find it difficult to account for nonlinear patterns and complicated borrower behaviors as financial data grows in size, complexity, and heterogeneity.
+Evaluation of credit risk is vital for the financial services industry because, it is required to  avoid risks and maintain compliance with regulations, organizations have to accurately predict a borrower's likelihood of failure while re-payment. Because they are straightforward and easy to understand for anyone, typical evaluation methods like systems based on rules and regression analysis have been often used in AI world. Modern advancement in machine learning, although have shown that the hierarchical (structural) financial data can now be predicted with significant advantages.
 
-The predictive accuracy of credit risk modeling has greatly increased as a result of recent developments in machine learning, especially ensemble-based techniques like Gradient Boosting Decision Trees (GBDT). Among these techniques, the Light Gradient Boosting Machine (LightGBM) has shown itself to be a very effective and scalable framework that can deal with imbalanced and high-dimensional credit datasets. Although LightGBM performs well, it is frequently perceived as a "black-box" paradigm, which restricts transparency and undermines confidence among auditors, regulators, and business users.
+The Risk of default Assessment, which measures a lender's probability count of defaulting lenders,  it is an important aspect of organizational stability in the technological current days in financial environment. The industry has already started moving from restrictive rule-wise structures to complicated Machine Learning (ML) architectures, as stated by Shreya and Pathak (2025) @shreya2025explainableartificialintelligencecredit. Although the fact is these models provide past unheard-of precision in forecasting, they are frequently addressed to as "black boxes." The paper uses Explainable Artificial Intelligence (XAI) to overcome the visibility gap and LightGBM to develop a robust credit assessment engine.
 
-This paper suggests an Explainable Agentic AI framework for credit risk assessment utilizing LightGBM in order to overcome these issues. The framework combines an intelligent agentic decision layer that analyzes model predictions, produces insightful explanations, and suggests suitable courses of action with SHAP-based explainability. The suggested approach seeks to facilitate responsible and explicable credit decision-making in regulated financial environments by fusing prediction accuracy, transparency, and adaptive reasoning.
+According to author de Lange et al. (2022) @de2022explainable and Bussmann et al. (2020) @bussmann2021explainable, financial businesses should offer a “Right to justification” as a way to make sure that risk management is the responsibility for both moral and verifiable. This flexibility is not just a technical preference in organization the but also a legal need. In a similar vein, de Lange et al. (2022) @de2022explainable demonstrate that explainable AI methods can maintain accurate predictions while working on to improve an  accessibility in financial systems nowadays. The significance of combining  the both concepts explainable machine learning with business analytics for ethical evaluation of credit risk defaulters have been demonstrated by recent studies by Shreya and Pathak (2025) @shreya2025explainableartificialintelligencecredit and Oyeyemi et al. (2025) @oyeyemiexplainable.
+
+Here are the important steps to develop a machine learning-based credit risk model to build overall good performance:
+
+1.	The first is collecting and preparing the data, including the encrypting variables with categories and finding the missing values.
+2.	Dividing the dataset into two subsets for testing and training.
+3.	Applying the training data to train for the LightGBM classifier.
+4.	Assessing predictive performance for the the model with metrics like ROC-AUC, accuracy, precision, recall, and F1-score.
+5.	Utilizing SHAP-based explanation and characteristic significance for analyzing the model forecasts.
+
+This method provides that the model is easy to understand, versatile, and trustworthy. The predictive model's accuracy on unidentified information is determined using model evaluation approaches including cross-validity and train-test partitioning.
+
+This project is using the Light Gradient Boosting Machine (LightGBM) programmed in Python langauge to create an Explainable Credit Risk Assessment system, driven by major breakthroughs in both research and business. LightGBM is determined because it performs well on structured table type datasets and is effective and versatile way. The Credit Risk Dataset's consumer demographic details, banking, and credit historical information will be used by the algorithm to forecast defaults listing on loans potential. Explainable methods like SHAP will be used to understand both specific and worldwide projections in order to assure integrity and transperency.
+
+The objective of this study is to show how explainable artificial intelligence concepts may be integrated with efficient boosting algorithms to create precise, accessible, and insightful credit risk evaluation solutions to avoid the losses of financial organization.
 
 ---
 
@@ -25,6 +39,95 @@ This paper suggests an Explainable Agentic AI framework for credit risk assessme
 ---
 
 ## 3. Analysis and Results
+
+### 3.1 Exploratory Data Analysis (EDA) : 
+
+#### 3.1.1 Data Description :
+
+The Credit Risk Dataset, which includes 32,581 borrower records and 12 characteristics pertaining to financial, credit history, and demographic data, is used in this study. Binary in nature, the target variable loan_status indicates whether a borrower is likely to default (1) or not (0). Income, loan amount, interest rate, length of employment, home ownership status, and loan purpose are among the numerical and qualitative variables included in the dataset. Its reasonable size and realistic structure make it ideal for using LightGBM and assessing explainable, agentic AI decision-making in credit risk prediction.
+
+##### Dataset Dimensions -
+Observations (rows): 32,581
+
+Features (columns): 12
+
+Target Variable: loan_status
+
+##### Target Variable -
+
+loan_status
+
+1 = High Risk (Default)
+
+0 = Low Risk (Non-Default)
+
+#### 3.1.2 Data Ingestion (Python) :
+
+The pandas package in Python was used to load the dataset. A dataframe called credit1 was created by reading the file credit_risk_dataset.csv. The dataset was first explored by examining column data types, previewing the first few records, and determining its dimensions. To guarantee effective ingestion and comprehend variable composition, the dataset structure was validated using the.shape(),.head(), and.info() functions.
+
+```{python}
+#| code-fold: true
+#| output: false
+
+import os
+import pandas as pd
+from skimpy import skim
+
+def find_git_root(start=None):
+    if start is None:
+        start = os.getcwd()
+    path = os.path.abspath(start)
+    
+    while True:
+        if os.path.isdir(os.path.join(path, ".git")):
+            return path
+        
+        parent = os.path.dirname(path)
+        if parent == path:
+            raise FileNotFoundError("No .git directory found — are you inside a Git repository?")
+        
+        path = parent
+
+repo_root = find_git_root()
+datasets_path = os.path.join(repo_root, "datasets")
+
+# Reading the datafile credit_risk_dataset.csv
+credit_path = os.path.join(datasets_path, "credit_risk_dataset.csv")
+credit1 = pd.read_csv(credit_path)
+```
+
+#### 3.1.3 Summary Statistics :
+
+```{python}
+credit1.describe()
+```
+
+For a more thorough summary:
+
+```{python}
+#| code-fold: true
+from skimpy import skim
+skim(credit1)
+```
+
+#### 3.1.4 Missing Value Analysis :
+
+```{python}
+credit1.isna().sum()
+```
+
+person_emp_length → 895 missing values
+
+loan_int_rate → 3,116 missing values
+
+Complete data is present in all other variables.
+
+Preprocessing will use median imputation to handle these missing values in order to maintain the robustness of the distribution.
+
+#### 3.1.5 Target Distribution :
+
+
+
 
 Import the project dependencies
 
@@ -81,6 +184,75 @@ we found that:
 
 - person_emp_length has 895 NA values
 - loan_int_rate has 3116 NA values
+
+
+test data ingestion using python
+
+```{r}
+# renv::use_python(type = "conda", envname = "myenv")
+# reticulate::py_install("numpy")
+# reticulate::py_install("pandas")
+# reticulate::py_install("skimpy")
+```
+
+```{python}
+# pip install pandas numpy
+```
+
+```{python}
+#| code-fold: true
+#| output: false
+
+import os
+import pandas as pd
+
+def find_git_root(start=None):
+    if start is None:
+        start = os.getcwd()
+    path = os.path.abspath(start)
+    
+    while True:
+        if os.path.isdir(os.path.join(path, ".git")):
+            return path
+        
+        parent = os.path.dirname(path)
+        if parent == path:
+            raise FileNotFoundError("No .git directory found — are you inside a Git repository?")
+        
+        path = parent
+
+repo_root = find_git_root()
+datasets_path = os.path.join(repo_root, "datasets")
+
+# Reading the datafile credit_risk_dataset.csv
+credit_path = os.path.join(datasets_path, "credit_risk_dataset.csv")
+credit1 = pd.read_csv(credit_path)
+```
+
+
+```{python}
+from skimpy import skim
+
+skim(credit1)
+```
+
+```{python}
+#| label: fig-polar
+#| fig-cap: "A line plot on a polar axis"
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+r = np.arange(0, 2, 0.01)
+theta = 2 * np.pi * r
+fig, ax = plt.subplots(
+  subplot_kw = {'projection': 'polar'} 
+)
+ax.plot(theta, r)
+ax.set_rticks([0.5, 1, 1.5, 2])
+ax.grid(True)
+plt.show()
+```
 
 ---
 

@@ -27,8 +27,12 @@ print("hello world!")
 # install.packages("reticulate")
 ```
 
-```{r}
+this command is used in R in the context of renv to install python packages
 
+```{r}
+# renv::use_python(type = "conda", envname = "myenv")
+# reticulate::py_install("matplotlib")
+# reticulate::py_install("pandas")
 ```
 
 ```{{text}}
@@ -45,10 +49,10 @@ In doTryCatch(return(expr), name, parentenv, handler) :
 ## Python code chunks
 
 ```{r}
-library(reticulate)
+# library(reticulate)
 # /opt/anaconda3/bin/python
 # /usr/local/bin/python
-use_python("/opt/anaconda3/bin/python")
+# use_python("/opt/anaconda3/bin/python")
 ```
 
 ```{python}
@@ -69,3 +73,32 @@ ax.grid(True)
 plt.show()
 ```
 
+```{python}
+#| code-fold: true
+#| output: false
+
+import os
+import pandas as pd
+
+def find_git_root(start=None):
+    if start is None:
+        start = os.getcwd()
+    path = os.path.abspath(start)
+    
+    while True:
+        if os.path.isdir(os.path.join(path, ".git")):
+            return path
+        
+        parent = os.path.dirname(path)
+        if parent == path:
+            raise FileNotFoundError("No .git directory found — are you inside a Git repository?")
+        
+        path = parent
+
+repo_root = find_git_root()
+datasets_path = os.path.join(repo_root, "datasets")
+
+# Reading the datafile credit_risk_dataset.csv
+credit_path = os.path.join(datasets_path, "credit_risk_dataset.csv")
+credit1 = pd.read_csv(credit_path)
+```
