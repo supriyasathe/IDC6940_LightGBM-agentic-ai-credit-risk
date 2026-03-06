@@ -8,7 +8,7 @@
 
 <meta name="author" content="Supriya Sathe (Advisor: Dr.&nbsp;Cohen)">
 
-<title>Agentic AI for Credit Risk Assessment using LightGBM – LightGBM Agentic AI Credit Risk</title>
+<title>Explainable Agentic AI for Credit Risk Assessment using LightGBM – LightGBM Agentic AI Credit Risk</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -93,10 +93,14 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-ff63373b1067ca6f91cf1456aa1f00a2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ff63373b1067ca6f91cf1456aa1f00a2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-0d4a9d19931feb4fee1ddab4b2489000.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-ff63373b1067ca6f91cf1456aa1f00a2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -125,40 +129,173 @@ div.csl-indent {
   }
 }</script>
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<script type="text/javascript">
-const typesetMath = (el) => {
-  if (window.MathJax) {
-    // MathJax Typeset
-    window.MathJax.typeset([el]);
-  } else if (window.katex) {
-    // KaTeX Render
-    var mathElements = el.getElementsByClassName("math");
-    var macros = [];
-    for (var i = 0; i < mathElements.length; i++) {
-      var texText = mathElements[i].firstChild;
-      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
-        window.katex.render(texText.data, mathElements[i], {
-          displayMode: mathElements[i].classList.contains('display'),
-          throwOnError: false,
-          macros: macros,
-          fleqn: false
-        });
-      }
-    }
-  }
-}
-window.Quarto = {
-  typesetMath
-};
-</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="nav-fixed quarto-light">
+<body class="nav-fixed quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -210,29 +347,26 @@ window.Quarto = {
    
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">1. Introduction</a></li>
-  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">2. Methods</a>
-  <ul class="collapse">
-  <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link" data-scroll-target="#data-preprocessing">2.1 Data Preprocessing</a></li>
-  <li><a href="#lightgbm-architecture-for-credit-risk-prediction" id="toc-lightgbm-architecture-for-credit-risk-prediction" class="nav-link" data-scroll-target="#lightgbm-architecture-for-credit-risk-prediction">2.2 LightGBM Architecture for Credit Risk Prediction</a></li>
-  <li><a href="#lightgbm-model-implementation" id="toc-lightgbm-model-implementation" class="nav-link" data-scroll-target="#lightgbm-model-implementation">2.3 LightGBM Model Implementation</a></li>
-  <li><a href="#explainable-agentic-ai-framework" id="toc-explainable-agentic-ai-framework" class="nav-link" data-scroll-target="#explainable-agentic-ai-framework">2.4 Explainable Agentic AI Framework</a></li>
-  <li><a href="#model-training-and-evaluation" id="toc-model-training-and-evaluation" class="nav-link" data-scroll-target="#model-training-and-evaluation">2.5 Model Training and Evaluation</a></li>
-  </ul></li>
+  <li><a href="#methods" id="toc-methods" class="nav-link" data-scroll-target="#methods">2. Methods</a></li>
   <li><a href="#analysis-and-results" id="toc-analysis-and-results" class="nav-link" data-scroll-target="#analysis-and-results">3. Analysis and Results</a>
   <ul class="collapse">
   <li><a href="#exploratory-data-analysis-eda" id="toc-exploratory-data-analysis-eda" class="nav-link" data-scroll-target="#exploratory-data-analysis-eda">3.1 Exploratory Data Analysis (EDA) :</a></li>
+  <li><a href="#data-ingestion" id="toc-data-ingestion" class="nav-link" data-scroll-target="#data-ingestion">3.1. Data Ingestion</a></li>
   </ul></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">4. Conclusion</a></li>
-  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">5. References</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">4. Conclusion</a>
+  <ul class="collapse">
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
+
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Agentic AI for Credit Risk Assessment using LightGBM</h1>
+<h1 class="title">Explainable Agentic AI for Credit Risk Assessment using LightGBM</h1>
 </div>
 
 
@@ -275,44 +409,7 @@ window.Quarto = {
 </section>
 <section id="methods" class="level2">
 <h2 class="anchored" data-anchor-id="methods">2. Methods</h2>
-<section id="data-preprocessing" class="level3">
-<h3 class="anchored" data-anchor-id="data-preprocessing">2.1 Data Preprocessing</h3>
-<p>First, preprocessing is for the dataset that includes borrower demographic details, financial level, and credit history characteristics. To utilize statistical robustness and lessen vulnerability to extreme values, missing numerical data are handled via median imputation. One-hot encoding is used to convert categorical variables into numerical representation so that gradient boosting calculation can use them for prediction.</p>
-</section>
-<section id="lightgbm-architecture-for-credit-risk-prediction" class="level3">
-<h3 class="anchored" data-anchor-id="lightgbm-architecture-for-credit-risk-prediction">2.2 LightGBM Architecture for Credit Risk Prediction</h3>
-<p>This reasearch uses Light Gradient Boosting Machine (LightGBM) to predict the possibility of loan defaulter’s based on borrower charactestics like, how much they are earning, employment history, how much load amount and history of credit. LightGBM is an really efficient as a boosting framework to make decision making tress sequentially to get accurate predictiona and reduce the errors in the prediction.</p>
-<p>The above function is optimized by the LightGBM model:</p>
-<p><span class="math display">\[
-\text{Obj}(t)=
-\sum_{i=1}^{n}
-l\left(
-y_i,
-\hat{y}_i^{(t-1)} + f_t(x_i)
-\right)
-+\Omega(f_t)
-\]</span></p>
-<p>𝑦𝑖 indicates if the loan is in default or not. (default or non-default)</p>
-<p>𝑦^i(t−1) is the value expected from the earlier loop.</p>
-<p>𝑓𝑡(𝑥𝑖) shows the new decision tree that was added after iteration</p>
-<p>l(⋅) represent the binary cross-entropy value for classifier loss function.</p>
-<p>Ω(ft) is the normalization idea that keeps excessive fitting from developing.</p>
-</section>
-<section id="lightgbm-model-implementation" class="level3">
-<h3 class="anchored" data-anchor-id="lightgbm-model-implementation">2.3 LightGBM Model Implementation</h3>
-</section>
-<section id="explainable-agentic-ai-framework" class="level3">
-<h3 class="anchored" data-anchor-id="explainable-agentic-ai-framework">2.4 Explainable Agentic AI Framework</h3>
-<p>An explainable agentic reasoning loop develop on the observe-reason-act model has been integrated with the system. The agent develops understandable explanations which is human-readable for credit risk evaluation through evaluating significant variables and observing predictive model outcomes through system.</p>
-<p>The cycle of agentic reasoning is stated as:</p>
-<p>Observation → Reasoning→ Decision → Explanation</p>
-<p>To provide relevant risk assessment, the framework analyzes borrower some characteristics such as financial status, credit amount, background in employment, and credit history.</p>
-</section>
-<section id="model-training-and-evaluation" class="level3">
-<h3 class="anchored" data-anchor-id="model-training-and-evaluation">2.5 Model Training and Evaluation</h3>
-<p>This study spliting the dataset into training and testing subsets using stratified sampling and it keeps the balance of class classification. Gradient boosting iterations with optimized hyperparameters, such as learning rate and number of leaves, are used to train the model.</p>
-<p>To guarantee dependable classification performance, model performance is assessed using ROC-AUC score, precision, recall, F1-score, and confusion matrix analysis.</p>
-</section>
+<hr>
 </section>
 <section id="analysis-and-results" class="level2">
 <h2 class="anchored" data-anchor-id="analysis-and-results">3. Analysis and Results</h2>
@@ -320,217 +417,19 @@ y_i,
 <h3 class="anchored" data-anchor-id="exploratory-data-analysis-eda">3.1 Exploratory Data Analysis (EDA) :</h3>
 <section id="data-description" class="level4">
 <h4 class="anchored" data-anchor-id="data-description">3.1.1 Data Description :</h4>
-<p>The present research is using the Credit Risk Dataset, which contains 32,581 borrower records and twelve variables related to financial, credit history, and demographic details. A borrower’s likelihood of defaulting (1) or not (0) is indicated by the binary target variable loan_status. The dataset includes both quantitative and qualitative factors, including income, loan amount, interest rate, length of work, home ownership status, and loan purpose. It is perfect for applying LightGBM and evaluating explainable, agentic AI decision-making in credit risk prediction due to its realistic structure and suitable size.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 9%">
-<col style="width: 9%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 9%">
-<col style="width: 10%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Feature</th>
-<th>Count</th>
-<th>Unique</th>
-<th>Top</th>
-<th>Freq</th>
-<th>Mean</th>
-<th>Std Dev</th>
-<th>Min</th>
-<th>25%</th>
-<th>50%</th>
-<th>75%</th>
-<th>Max</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>person_age</td>
-<td>32581</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>27.73</td>
-<td>6.35</td>
-<td>20</td>
-<td>23</td>
-<td>26</td>
-<td>30</td>
-<td>144</td>
-</tr>
-<tr class="even">
-<td>person_income</td>
-<td>32581</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>66074.85</td>
-<td>61983.12</td>
-<td>4000</td>
-<td>38500</td>
-<td>55000</td>
-<td>79200</td>
-<td>6000000</td>
-</tr>
-<tr class="odd">
-<td>person_home_ownership</td>
-<td>32581</td>
-<td>4</td>
-<td>RENT</td>
-<td>16446</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-</tr>
-<tr class="even">
-<td>person_emp_length</td>
-<td>31686</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>4.79</td>
-<td>4.14</td>
-<td>0</td>
-<td>2</td>
-<td>4</td>
-<td>7</td>
-<td>123</td>
-</tr>
-<tr class="odd">
-<td>loan_intent</td>
-<td>32581</td>
-<td>6</td>
-<td>EDUCATION</td>
-<td>6453</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-</tr>
-<tr class="even">
-<td>loan_grade</td>
-<td>32581</td>
-<td>7</td>
-<td>A</td>
-<td>10777</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-</tr>
-<tr class="odd">
-<td>loan_amnt</td>
-<td>32581</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>9589.37</td>
-<td>6322.09</td>
-<td>500</td>
-<td>5000</td>
-<td>8000</td>
-<td>12200</td>
-<td>35000</td>
-</tr>
-<tr class="even">
-<td>loan_int_rate</td>
-<td>29465</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>11.01</td>
-<td>3.24</td>
-<td>5.42</td>
-<td>7.90</td>
-<td>10.99</td>
-<td>13.47</td>
-<td>23.22</td>
-</tr>
-<tr class="odd">
-<td>loan_status</td>
-<td>32581</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>0.22</td>
-<td>0.41</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-<td>1</td>
-</tr>
-<tr class="even">
-<td>loan_percent_income</td>
-<td>32581</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>0.17</td>
-<td>0.11</td>
-<td>0.00</td>
-<td>0.09</td>
-<td>0.15</td>
-<td>0.23</td>
-<td>0.83</td>
-</tr>
-<tr class="odd">
-<td>cb_person_default_on_file</td>
-<td>32581</td>
-<td>2</td>
-<td>N</td>
-<td>26836</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-</tr>
-<tr class="even">
-<td>cb_person_cred_hist_length</td>
-<td>32581</td>
-<td>–</td>
-<td>–</td>
-<td>–</td>
-<td>5.80</td>
-<td>4.06</td>
-<td>2</td>
-<td>3</td>
-<td>4</td>
-<td>8</td>
-<td>30</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Dataset Dimensions</strong> -</p>
+<p>The Credit Risk Dataset, which includes 32,581 borrower records and 12 characteristics pertaining to financial, credit history, and demographic data, is used in this study. Binary in nature, the target variable loan_status indicates whether a borrower is likely to default (1) or not (0). Income, loan amount, interest rate, length of employment, home ownership status, and loan purpose are among the numerical and qualitative variables included in the dataset. Its reasonable size and realistic structure make it ideal for using LightGBM and assessing explainable, agentic AI decision-making in credit risk prediction.</p>
+<section id="dataset-dimensions--" class="level5">
+<h5 class="anchored" data-anchor-id="dataset-dimensions--">Dataset Dimensions -</h5>
 <p>Observations (rows): 32,581</p>
 <p>Features (columns): 12</p>
 <p>Target Variable: loan_status</p>
-<p><strong>Target Variable</strong> -</p>
+</section>
+<section id="target-variable--" class="level5">
+<h5 class="anchored" data-anchor-id="target-variable--">Target Variable -</h5>
 <p>loan_status</p>
 <p>1 = High Risk (Default)</p>
 <p>0 = Low Risk (Non-Default)</p>
+</section>
 </section>
 <section id="data-ingestion-python" class="level4">
 <h4 class="anchored" data-anchor-id="data-ingestion-python">3.1.2 Data Ingestion (Python) :</h4>
@@ -569,76 +468,27 @@ y_i,
 <section id="summary-statistics" class="level4">
 <h4 class="anchored" data-anchor-id="summary-statistics">3.1.3 Summary Statistics :</h4>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.max_columns'</span>, <span class="va">None</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>pd.set_option(<span class="st">'display.width'</span>, <span class="va">None</span>)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>credit1.describe(include<span class="op">=</span><span class="st">'all'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>credit1.describe()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>          person_age  person_income person_home_ownership  person_emp_length  \
-count   32581.000000   3.258100e+04                 32581       31686.000000   
-unique           NaN            NaN                     4                NaN   
-top              NaN            NaN                  RENT                NaN   
-freq             NaN            NaN                 16446                NaN   
-mean       27.734600   6.607485e+04                   NaN           4.789686   
-std         6.348078   6.198312e+04                   NaN           4.142630   
-min        20.000000   4.000000e+03                   NaN           0.000000   
-25%        23.000000   3.850000e+04                   NaN           2.000000   
-50%        26.000000   5.500000e+04                   NaN           4.000000   
-75%        30.000000   7.920000e+04                   NaN           7.000000   
-max       144.000000   6.000000e+06                   NaN         123.000000   
+<pre><code>         person_age  ...  cb_person_cred_hist_length
+count  32581.000000  ...                32581.000000
+mean      27.734600  ...                    5.804211
+std        6.348078  ...                    4.055001
+min       20.000000  ...                    2.000000
+25%       23.000000  ...                    3.000000
+50%       26.000000  ...                    4.000000
+75%       30.000000  ...                    8.000000
+max      144.000000  ...                   30.000000
 
-       loan_intent loan_grade     loan_amnt  loan_int_rate   loan_status  \
-count        32581      32581  32581.000000   29465.000000  32581.000000   
-unique           6          7           NaN            NaN           NaN   
-top      EDUCATION          A           NaN            NaN           NaN   
-freq          6453      10777           NaN            NaN           NaN   
-mean           NaN        NaN   9589.371106      11.011695      0.218164   
-std            NaN        NaN   6322.086646       3.240459      0.413006   
-min            NaN        NaN    500.000000       5.420000      0.000000   
-25%            NaN        NaN   5000.000000       7.900000      0.000000   
-50%            NaN        NaN   8000.000000      10.990000      0.000000   
-75%            NaN        NaN  12200.000000      13.470000      0.000000   
-max            NaN        NaN  35000.000000      23.220000      1.000000   
-
-        loan_percent_income cb_person_default_on_file  \
-count          32581.000000                     32581   
-unique                  NaN                         2   
-top                     NaN                         N   
-freq                    NaN                     26836   
-mean               0.170203                       NaN   
-std                0.106782                       NaN   
-min                0.000000                       NaN   
-25%                0.090000                       NaN   
-50%                0.150000                       NaN   
-75%                0.230000                       NaN   
-max                0.830000                       NaN   
-
-        cb_person_cred_hist_length  
-count                 32581.000000  
-unique                         NaN  
-top                            NaN  
-freq                           NaN  
-mean                      5.804211  
-std                       4.055001  
-min                       2.000000  
-25%                       3.000000  
-50%                       4.000000  
-75%                       8.000000  
-max                      30.000000  </code></pre>
+[8 rows x 8 columns]</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># credit1.columns</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># for col in credit1.columns:</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     print(col)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>For a more thorough summary:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skimpy <span class="im">import</span> skim</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>skim(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skimpy <span class="im">import</span> skim</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>skim(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>╭─────────────────────────────── skimpy summary ───────────────────────────────╮
@@ -722,7 +572,7 @@ max                      30.000000  </code></pre>
 <section id="missing-value-analysis" class="level4">
 <h4 class="anchored" data-anchor-id="missing-value-analysis">3.1.4 Missing Value Analysis :</h4>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>credit1.isna().<span class="bu">sum</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>credit1.isna().<span class="bu">sum</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>person_age                       0
 person_income                    0
@@ -746,98 +596,46 @@ dtype: int64</code></pre>
 </section>
 <section id="target-distribution" class="level4">
 <h4 class="anchored" data-anchor-id="target-distribution">3.1.5 Target Distribution :</h4>
-<p>Import the project dependencies (Libraries)</p>
+<p>Import the project dependencies</p>
 <!-- This code chunk is loading all libraries being used in the project. -->
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"skimr"</span>, <span class="st">"knitr"</span>, <span class="st">"ggthemes"</span>, <span class="st">"ggrepel"</span>, <span class="st">"dslabs"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(packages)</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Libraries</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(packages, library, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for reproducibility</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"skimr"</span>, <span class="st">"knitr"</span>, <span class="st">"ggthemes"</span>, <span class="st">"ggrepel"</span>, <span class="st">"dslabs"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages(packages)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Libraries</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(packages, library, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set seed for reproducibility</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
-<p>Here, I analyze target variable loan_status To show the distribution of default and non-default loan cases in the used dataset. I use value_counts() function to calculate the frequency counts and percentage percentages of each class using Python’s Panda library. The Matplotlib Python’s library uses to create a bar chart that depicted the count of borrowers who were in default and non-default list. This study analysis gives insight into the overall credit risk pattern and helps with appropriate model evaluation metrics and training decision-making.</p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>Target Counts:
- loan_status
-0    25473
-1     7108
-Name: count, dtype: int64</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Target Percentage:
- loan_status
-0    78.183604
-1    21.816396
-Name: proportion, dtype: float64</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>(array([0, 1]), [Text(0, 0, '0'), Text(1, 0, '1')])</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="report_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="report_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>&lt;matplotlib.colorbar.Colorbar object at 0x117c0e390&gt;</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>([&lt;matplotlib.axis.XTick object at 0x117c40bf0&gt;, &lt;matplotlib.axis.XTick object at 0x1179f6510&gt;, &lt;matplotlib.axis.XTick object at 0x117d184a0&gt;, &lt;matplotlib.axis.XTick object at 0x117ce7530&gt;, &lt;matplotlib.axis.XTick object at 0x117b61970&gt;, &lt;matplotlib.axis.XTick object at 0x117d18890&gt;, &lt;matplotlib.axis.XTick object at 0x117d19220&gt;, &lt;matplotlib.axis.XTick object at 0x117d19c10&gt;], [Text(0, 0, 'person_age'), Text(1, 0, 'person_income'), Text(2, 0, 'person_emp_length'), Text(3, 0, 'loan_amnt'), Text(4, 0, 'loan_int_rate'), Text(5, 0, 'loan_status'), Text(6, 0, 'loan_percent_income'), Text(7, 0, 'cb_person_cred_hist_length')])</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>([&lt;matplotlib.axis.YTick object at 0x117c41b80&gt;, &lt;matplotlib.axis.YTick object at 0x117c82ff0&gt;, &lt;matplotlib.axis.YTick object at 0x117d1aa50&gt;, &lt;matplotlib.axis.YTick object at 0x117d1b440&gt;, &lt;matplotlib.axis.YTick object at 0x117d1bdd0&gt;, &lt;matplotlib.axis.YTick object at 0x117d1a120&gt;, &lt;matplotlib.axis.YTick object at 0x117cb43b0&gt;, &lt;matplotlib.axis.YTick object at 0x117d28740&gt;], [Text(0, 0, 'person_age'), Text(0, 1, 'person_income'), Text(0, 2, 'person_emp_length'), Text(0, 3, 'loan_amnt'), Text(0, 4, 'loan_int_rate'), Text(0, 5, 'loan_status'), Text(0, 6, 'loan_percent_income'), Text(0, 7, 'cb_person_cred_hist_length')])</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="report_files/figure-html/unnamed-chunk-8-5.png" class="img-fluid figure-img" width="768"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>u### 3.1. Data Ingestion</p>
+</section>
+</section>
+<section id="data-ingestion" class="level3">
+<h3 class="anchored" data-anchor-id="data-ingestion">3.1. Data Ingestion</h3>
 <p>This code chunk is importing the dataset from the folder datasets which it is finding at the root of the github repo and it is concatenating the path to run the function read_csv from tidyverse.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>find_git_root <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">start =</span> <span class="fu">getwd</span>()) {</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  path <span class="ot">&lt;-</span> <span class="fu">normalizePath</span>(start, <span class="at">winslash =</span> <span class="st">"/"</span>, <span class="at">mustWork =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (path <span class="sc">!=</span> <span class="fu">dirname</span>(path)) {</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">dir.exists</span>(<span class="fu">file.path</span>(path, <span class="st">".git"</span>))) <span class="fu">return</span>(path)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    path <span class="ot">&lt;-</span> <span class="fu">dirname</span>(path)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"No .git directory found — are you inside a Git repository?"</span>)</span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>repo_root <span class="ot">&lt;-</span> <span class="fu">find_git_root</span>()</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>datasets_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(repo_root, <span class="st">"datasets"</span>)</span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading the datafile credit_risk_dataset.csv</span></span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>credit_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datasets_path, <span class="st">"credit_risk_dataset.csv"</span>)</span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>credit1 <span class="ot">=</span> <span class="fu">read_csv</span>(credit_path, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>find_git_root <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">start =</span> <span class="fu">getwd</span>()) {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  path <span class="ot">&lt;-</span> <span class="fu">normalizePath</span>(start, <span class="at">winslash =</span> <span class="st">"/"</span>, <span class="at">mustWork =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span> (path <span class="sc">!=</span> <span class="fu">dirname</span>(path)) {</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">dir.exists</span>(<span class="fu">file.path</span>(path, <span class="st">".git"</span>))) <span class="fu">return</span>(path)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    path <span class="ot">&lt;-</span> <span class="fu">dirname</span>(path)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stop</span>(<span class="st">"No .git directory found — are you inside a Git repository?"</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>repo_root <span class="ot">&lt;-</span> <span class="fu">find_git_root</span>()</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>datasets_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(repo_root, <span class="st">"datasets"</span>)</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading the datafile credit_risk_dataset.csv</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>credit_path <span class="ot">&lt;-</span> <span class="fu">file.path</span>(datasets_path, <span class="st">"credit_risk_dataset.csv"</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>credit1 <span class="ot">=</span> <span class="fu">read_csv</span>(credit_path, <span class="at">show_col_types =</span> <span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   person_age     person_income     person_home_ownership person_emp_length
  Min.   : 20.00   Min.   :   4000   Length:32581          Min.   :  0.00   
@@ -872,7 +670,7 @@ Name: proportion, dtype: float64</code></pre>
  Max.   :30.000            
                            </code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 12
   person_age person_income person_home_ownership person_emp_length loan_intent
@@ -887,8 +685,8 @@ Name: proportion, dtype: float64</code></pre>
 #   loan_status &lt;dbl&gt;, loan_percent_income &lt;dbl&gt;,
 #   cb_person_default_on_file &lt;chr&gt;, cb_person_cred_hist_length &lt;dbl&gt;</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count total NAs per column</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(credit1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Count total NAs per column</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(credit1))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                person_age              person_income 
                          0                          0 
@@ -904,54 +702,54 @@ Name: proportion, dtype: float64</code></pre>
                          0                          0 </code></pre>
 </div>
 </div>
-<p>I found that:</p>
+<p>we found that:</p>
 <ul>
 <li>person_emp_length has 895 NA values</li>
 <li>loan_int_rate has 3116 NA values</li>
 </ul>
 <p>test data ingestion using python</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># renv::use_python(type = "conda", envname = "myenv")</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># reticulate::py_install("numpy")</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># reticulate::py_install("pandas")</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># reticulate::py_install("skimpy")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># renv::use_python(type = "conda", envname = "myenv")</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co"># reticulate::py_install("numpy")</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># reticulate::py_install("pandas")</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co"># reticulate::py_install("skimpy")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install pandas numpy</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># pip install pandas numpy</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_git_root(start<span class="op">=</span><span class="va">None</span>):</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> start <span class="kw">is</span> <span class="va">None</span>:</span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>        start <span class="op">=</span> os.getcwd()</span>
-<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> os.path.abspath(start)</span>
-<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
-<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.isdir(os.path.join(path, <span class="st">".git"</span>)):</span>
-<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> path</span>
-<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>        parent <span class="op">=</span> os.path.dirname(path)</span>
-<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> parent <span class="op">==</span> path:</span>
-<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="st">"No .git directory found — are you inside a Git repository?"</span>)</span>
-<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> parent</span>
-<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>repo_root <span class="op">=</span> find_git_root()</span>
-<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>datasets_path <span class="op">=</span> os.path.join(repo_root, <span class="st">"datasets"</span>)</span>
-<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading the datafile credit_risk_dataset.csv</span></span>
-<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>credit_path <span class="op">=</span> os.path.join(datasets_path, <span class="st">"credit_risk_dataset.csv"</span>)</span>
-<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>credit1 <span class="op">=</span> pd.read_csv(credit_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> find_git_root(start<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> start <span class="kw">is</span> <span class="va">None</span>:</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        start <span class="op">=</span> os.getcwd()</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    path <span class="op">=</span> os.path.abspath(start)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> <span class="va">True</span>:</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> os.path.isdir(os.path.join(path, <span class="st">".git"</span>)):</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>            <span class="cf">return</span> path</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>        parent <span class="op">=</span> os.path.dirname(path)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> parent <span class="op">==</span> path:</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="st">"No .git directory found — are you inside a Git repository?"</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>        path <span class="op">=</span> parent</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>repo_root <span class="op">=</span> find_git_root()</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>datasets_path <span class="op">=</span> os.path.join(repo_root, <span class="st">"datasets"</span>)</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Reading the datafile credit_risk_dataset.csv</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>credit_path <span class="op">=</span> os.path.join(datasets_path, <span class="st">"credit_risk_dataset.csv"</span>)</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>credit1 <span class="op">=</span> pd.read_csv(credit_path)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skimpy <span class="im">import</span> skim</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>skim(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> skimpy <span class="im">import</span> skim</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>skim(credit1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>╭─────────────────────────────── skimpy summary ───────────────────────────────╮
 │          Data Summary                Data Types                              │
@@ -1030,14 +828,40 @@ Name: proportion, dtype: float64</code></pre>
 ╰──────────────────────────────────── End ─────────────────────────────────────╯</code></pre>
 </div>
 </div>
-</section>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">2</span>, <span class="fl">0.01</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> <span class="dv">2</span> <span class="op">*</span> np.pi <span class="op">*</span> r</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  subplot_kw <span class="op">=</span> {<span class="st">'projection'</span>: <span class="st">'polar'</span>} </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>ax.plot(theta, r)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>ax.set_rticks([<span class="fl">0.5</span>, <span class="dv">1</span>, <span class="fl">1.5</span>, <span class="dv">2</span>])</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-polar" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-polar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="report_files/figure-html/fig-polar-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-polar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: A line plot on a polar axis
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<hr>
 </section>
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">4. Conclusion</h2>
-</section>
-<section id="references" class="level2">
-<h2 class="anchored" data-anchor-id="references">5. References</h2>
+<hr>
+<section id="references" class="level3">
+<h3 class="anchored" data-anchor-id="references">References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-shreya2025explainableartificialintelligencecredit" class="csl-entry" role="listitem">
 1. Shreya, &amp; Pathak, H. (2025). <em>Explainable artificial intelligence credit risk assessment using machine learning</em>. <a href="https://arxiv.org/abs/2506.19383">https://arxiv.org/abs/2506.19383</a>
@@ -1055,10 +879,24 @@ Name: proportion, dtype: float64</code></pre>
 
 
 </section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
     const icon = "";
     const anchorJS = new window.AnchorJS();
     anchorJS.options = {
@@ -1130,7 +968,7 @@ Name: proportion, dtype: float64</code></pre>
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/supriyasathe\.github\.io\/IDC6940_LightGBM-agentic-ai-credit-risk\/");
+        var filterRegex = new RegExp('/' + window.location.host + '/');
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
